@@ -1,0 +1,26 @@
+<button type="button" class="btn btn-primary btn-tn" [disabled]="loadingTournamentResults" (click)="refreshTournamentResults()">
+  <i class="fa {{loadingTournamentResults ? 'fa-spinner fa-spin': 'fa-refresh'}}"></i>&nbsp;Refresh</button>
+
+<button *ngIf="!tournamentResultsView.hasAwardedPrizes" type="button" class="btn btn-primary btn-tn margin-left-5"
+  [disabled]="!tournamentResultsView.canAwardPrizes" (click)="awardPrizes()">
+  <i class="fa fa-trophy"></i>
+  Award Prizes
+</button>
+<label *ngIf="tournamentResultsView.hasAwardedPrizes">Prizes have been awarded</label>
+
+<table class="table table-striped table-bordered table-hover table-condensed margin-top-5" style="font-size: 0.8em">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Position</th>
+      <th>Prize</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let tournamentResult of tournamentResultsView.results">
+      <td title="{{tournamentResult.userGuid}}">{{tournamentResult.screenName}}</td>
+      <td>{{tournamentResult.placing}}</td>
+      <td>{{tournamentResult.prize}}</td>
+    </tr>
+  </tbody>
+</table>

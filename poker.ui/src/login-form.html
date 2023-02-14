@@ -1,0 +1,31 @@
+<template>
+    <form>
+
+                  
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-control" value.bind="loginEmail" placeholder="Your email" disabled.bind="loggingIn || loginResult.success">
+        </div>
+    
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control" value.bind="loginPassword" placeholder="Your password" disabled.bind="loggingIn || loginResult.success">
+        </div>                                
+    
+        <div class="alert alert-danger form-group" show.bind="loginResult.errorMessage">
+          ${loginResult.errorMessage}
+        </div>
+
+        <div class="alert alert-success" show.bind="loginResult.success">
+            <p>Logged in successfully! <i class="fa fa-check"></i></p>                     
+        </div>
+    
+        <div class="form-group">
+          <button click.trigger="login()" disabled.bind="loggingIn || loginResult.success" class="btn btn-primary">Login <i class="fa fa-refresh fa-spin" show.bind="loggingIn"></i></button>
+        </div>
+      </form>
+      <div show.bind="!loginResult.success">
+          <p>New User? <a href="#" click.delegate="registerNowClicked()">Register now!</a> </p>
+          <p>Forgot Password? <a href="#" click.delegate="resetPasswordClicked()">Reset Password</a></p>
+      </div>
+</template>

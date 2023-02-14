@@ -1,0 +1,116 @@
+<nb-card>
+  <nb-card-body>
+    <div class="row" [formGroup]="form">
+      <div class="col-lg-9">
+        <h2 [title]="user.guid">User Details</h2>
+    
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-control" formControlName="email" [readonly]="loading || saving">
+        </div>
+    
+        <div class="form-group">
+          <label>Screen Name</label>
+          <input type="text" class="form-control" formControlName="screenName" [readonly]="loading || saving">
+        </div>
+    
+        <div class="form-group">
+          <label>Password</label>
+          <input type="text" class="form-control" formControlName="password" placeholder="leave blank unless changing password" [readonly]="loading || saving">
+        </div>
+    
+        <div class="form-group">
+          <div class="checkbox">
+    
+            <label><input type="checkbox" value="1" name="" formControlName="activated">Activated</label>
+          </div>
+        </div>
+    
+        <div class="form-group">
+          <div class="checkbox">
+    
+            <label>
+              <input type="checkbox" value="1" name="" formControlName="notifyUserStatus">Notify User Status
+            </label>
+          </div>
+        </div>
+    
+        <div class="form-group">
+          <div class="checkbox">
+    
+            <label>
+              <input type="checkbox" value="1" name="" formControlName="disabled">Disabled
+            </label>
+          </div>
+        </div>
+    
+    
+        <div class="form-group">      
+          <button type="button" class="btn btn-primary btn-tn" [attr.disabled]="(loading || saving)?'' : null" (click)="save()">
+            <i class="fa ${saving ? 'fa-spinner fa-spin': 'fa-save'}"></i>&nbsp;Save</button>            
+            <button type="button" class="btn btn-primary btn-tn margin-left-5" [attr.disabled]="(loading || saving)?'' : null" (click)="delete()">
+              <i class="fa ${saving ? 'fa-spinner fa-spin': 'fa-save'}"></i>&nbsp;Delete</button>            
+        </div>
+    
+        <div class="form-group">
+    
+          <div class="alert alert-success" *ngIf="!saving && saveSuccess">
+            <p>Saved!</p>
+          </div>
+        </div>
+    
+    
+    
+      </div>
+      
+    
+      <div class="col-lg-3">
+        
+
+        <h2>Accounts</h2>
+        <!-- <input type="checkbox" [checked]="editAccounts" (change)="editAccountsCheckChanged()">Edit -->
+    
+        <div formArrayName="accounts">
+          <div *ngFor="let account of accounts.controls; let i = index;" [formGroupName]="i">
+            <label class="uppercase">{{account.get('currency').value}}</label>        
+            <input type="number" class="form-control" formControlName="balance" [readonly]="!editAccounts || loading || saving"/>
+          </div>
+        </div>
+
+        
+      </div>
+    
+    
+    </div>
+    <hr>
+    <div class="row">
+      
+      <div class="col-lg-3">
+        <h4>Add Funds Manually</h4>
+        <div class="form-group">      
+          <button type="button" class="btn btn-primary btn-tn" [attr.disabled]="(loading || saving)?'' : null" (click)="manaullyAddFundsToAccount()">
+            <i class="fa ${saving ? 'fa-spinner fa-spin': 'fa-save'}"></i>&nbsp;Add Funds</button>                        
+        </div>
+
+        <div class="form-group">
+          <label>Currency</label>
+          <!-- <input type="text" class="form-control" [(ngModel)]="manualAddCurrency" [readonly]="loading || saving"> -->
+          <select type="text" class="form-control uppercase" [(ngModel)]="manualAddCurrency">
+              <option [value]="currency" *ngFor="let currency of currencies">{{currency}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+          <label>Amount</label>
+          <input type="text" class="form-control" [(ngModel)]="manualAddAmount" [readonly]="loading || saving">
+        </div>
+
+        <div class="form-group">
+            <label>Comment</label>
+            <input type="text" class="form-control" [(ngModel)]="manualAddComment" [readonly]="loading || saving">
+          </div>
+
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

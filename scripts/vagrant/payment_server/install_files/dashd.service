@@ -1,0 +1,22 @@
+[Unit]
+Description=dashd
+After=network.target
+
+[Service]
+User=troy
+Group=troy
+
+Type=forking
+WorkingDirectory=/opt/dashcore
+ExecStart=/opt/dashcore/bin/dashd -daemon -conf=/home/troy/.dashcore/dash.conf
+
+Restart=always
+RestartSec=30
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=4s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

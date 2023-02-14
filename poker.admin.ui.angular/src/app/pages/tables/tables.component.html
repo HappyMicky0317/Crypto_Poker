@@ -1,0 +1,78 @@
+<nb-card>
+  <nb-card-header>
+
+  </nb-card-header>
+
+  <nb-card-body>
+    <div class="row" *ngIf="errorMessage">
+      <div class="col-xs-12 col-md-6">
+        <div class="alert alert-danger">{{errorMessage}}</div>
+      </div>
+    </div>
+
+    <span *ngIf="loading">Loading...<i class="fa fa-spin fa-sync"></i></span>
+
+    <ng-container *ngIf="!loading && !errorMessage">
+      <button class="btn btn-primary btn-tn" (click)="addTable()">Add Table</button>
+      <table class="table table-striped table-bordered table-hover table-condensed margin-top-5">
+        <thead>
+          <tr>
+            <th>Table Name</th>
+            <th>Small Blind<br />($USD)</th>
+            <th>Big Blind<br />($USD)</th>
+            <th>Currency&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+            <th>Max&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Players</th>
+            <th>Time to Act<br /> (sec)</th>
+            <th>Order</th>
+            <th>Max Buy In<br />(BBs)</th>
+            <th>Rake %</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let table of tableConfigs">
+            <td><span *ngIf="!table.edit">{{table.name}} <i class="currency-icon currency-{{table.currency}}"></i></span>
+              <input *ngIf="table.edit" [(ngModel)]="table.name" class="form-control input-sm" placeholder="enter table name" /></td>
+            <td><span *ngIf="!table.edit">{{table.smallBlindUsd}}</span><input *ngIf="table.edit" [(ngModel)]="table.smallBlindUsd"
+                class="form-control input-sm" style="max-width: 131px" /></td>
+            <td><span *ngIf="!table.edit">{{table.bigBlindUsd}}</span><input *ngIf="table.edit" [(ngModel)]="table.bigBlindUsd"
+                class="form-control input-sm" style="max-width: 131px" /></td>
+            <td><span *ngIf="!table.edit" class="uppercase">{{table.currency}}</span>
+              <select *ngIf="table.edit" [(ngModel)]="table.currency" class="uppercase form-control">
+                <option *ngFor="let currency of currencies">{{currency}}</option>
+              </select>
+
+
+            </td>
+            <td>
+              <span *ngIf="!table.edit">{{table.maxPlayers}}</span>
+              <select *ngIf="table.edit" [(ngModel)]="table.maxPlayers" class="form-control">
+                <option *ngFor="let i of [2,3,4,5,6,7,8,9]" [ngValue]="i">{{i}}</option>
+              </select>
+
+
+            <td><span *ngIf="!table.edit">{{table.timeToActSec}}</span><input *ngIf="table.edit" [(ngModel)]="table.timeToActSec"
+                class="form-control input-sm" style="max-width: 131px" /></td>
+            <td><span *ngIf="!table.edit">{{table.orderIndex}}</span><input *ngIf="table.edit" [(ngModel)]="table.orderIndex"
+                class="form-control input-sm" style="max-width: 131px" /></td>
+            <td><span *ngIf="!table.edit">{{table.maxBuyIn}}</span><input *ngIf="table.edit" [(ngModel)]="table.maxBuyIn" type="number"
+                class="form-control input-sm" style="max-width: 131px" /></td>
+            <td><span *ngIf="!table.edit">{{table.rake}}</span><input *ngIf="table.edit" [(ngModel)]="table.rake" class="form-control input-sm"
+                style="max-width: 131px" /></td>
+            <td>
+              <div style="float: right;">
+                <button type="button" class="btn btn-primary btn-tn" (click)="editOrSave(table)">{{table.edit ?
+                  'Save':'Edit'}}</button>
+                <button type="button" class="btn btn-primary btn-tn margin-left-5" (click)="delete(table)">Delete</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+
+
+
+  </nb-card-body>
+</nb-card>

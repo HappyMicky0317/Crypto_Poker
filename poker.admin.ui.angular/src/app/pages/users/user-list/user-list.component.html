@@ -1,0 +1,45 @@
+<nb-card>
+  <nb-card-body>
+    
+<p *ngIf="loading">Loading...</p>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div style="display:flex;justify-content: space-between;align-items: center;">
+      <input type="text" class="form-control" placeholder="enter screen name or email" [(ngModel)]="searchTerm" (keyup)="searchKeyup($event)">
+      
+      <button type="button" class="btn btn-primary btn-tn" (click)="fetch()" style="margin-left:10px;">Search</button>
+    </div>
+    <div style="margin-top:10px;">
+      <label>
+        <input type="checkbox" [(ngModel)]="includeAnon">Include anon
+      </label>
+    </div>
+  </div>
+  
+</div>
+
+
+<table class="table table-bordered table-hover table-condensed margin-top-5">
+  
+  <tbody>
+    <tr *ngFor="let user of users" href="#" [routerLink]="[user.guid]">
+      <td>
+        <a>
+          <span>{{user.screenName}}</span>
+          
+        </a>
+      </td>
+     <td>
+      <span>{{user.email}}</span>
+     </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Displaying at most the {{count}} most recent</p>
+
+
+
+  </nb-card-body>
+</nb-card>

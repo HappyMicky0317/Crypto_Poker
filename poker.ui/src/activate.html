@@ -1,0 +1,28 @@
+<template>
+  <div class="container" style="padding: 100px 0;">
+    <div class="row">
+      <div class="text-center">
+        <div show.bind="loading">Verifying please wait...
+          <i class="fa fa-spinner fa-spin"></i>
+        </div>
+
+        <div class="alert alert-dismissible alert-danger" show.bind="result.errorMessage">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+
+          <p>${result.errorMessage}</p>
+        </div>
+        
+
+        <div class="alert alert-dismissible alert-success" show.bind="result.success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <p>${result.message}</p>
+          <p>Redirecting to Tables...
+            <i class="fa fa-spinner fa-spin"></i>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</template>

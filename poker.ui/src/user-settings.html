@@ -1,0 +1,48 @@
+<template>
+  <form>
+    <!--<div class="form-group">
+      <label for="email">Email address:</label>
+      <input type="email" class="form-control" id="email">
+    </div>-->
+
+    <div class="form-group" show.bind="loading">
+      <span>Loading your account please wait...</span>
+      <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+    </div>
+
+    <div class="form-group" show.bind="!apiService.authenticated">
+      <div class="alert alert-warning">
+        <p>You are not logged in! </p>
+        <p><a href="#" click.delegate="loginClicked()">Login </a> or <a href="#" click.delegate="registerClicked()">Register now!</a></p>
+      </div>            
+    </div>
+
+    <div class="form-group" show.bind="!loading && apiService.authenticated">
+        <label>Email</label>
+        <input type="text" class="form-control" value.bind="result.email" disabled>
+      </div>
+
+    <div class="form-group" css="visibility: ${loading ? 'hidden':'visible'}">
+      <label>Screen Name</label>
+      <input type="text" class="form-control" value.bind="result.screenName" disabled.bind="saving">
+    </div>
+    
+    <div class="form-group" css="visibility: ${loading ? 'hidden':'visible'}">
+      <label>
+        <input type="checkbox" value="" checked.bind="result.muteSounds" disabled.bind="saving">Mute Sounds</label>
+    </div>
+    
+
+    <div class="alert alert-danger form-group" show.bind="saveResult.errorMessage">
+      ${saveResult.errorMessage}
+    </div>
+
+    <div class="form-group">
+        <button click.trigger="save()" disabled.bind="saving" show.bind="!loading" class="btn save-button">${saveButtonText} <i class="fa fa-save" show.bind="!saving"> </i><i class="fa fa-refresh fa-spin" show.bind="saving"></i></button>      
+        <button show.bind="apiService.authenticated" style="float: right;" click.trigger="logout()" disabled.bind="saving" show.bind="!loading" class="btn btn-danger">Logout <i class="fa fa-sign-out"></i></button>
+      
+    </div>
+  </form>
+
+
+</template>

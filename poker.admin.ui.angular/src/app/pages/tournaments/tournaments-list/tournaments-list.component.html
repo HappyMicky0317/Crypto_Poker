@@ -1,0 +1,38 @@
+<nb-card>
+  <nb-card-header>Tournaments</nb-card-header>
+  <nb-card-body>
+    <div class="row" *ngIf="errorMessage">
+      <div class="col-xs-12 col-md-6">
+        <div class="alert alert-danger">{{errorMessage}}</div>
+      </div>
+    </div>
+    
+    
+    <a [routerLink]="['new']" class="btn btn-hero-primary btn-tn">Add Tournament <i class="fa fa-plus"></i></a>
+
+
+    <table class="table table-striped table-bordered table-hover table-condensed margin-top-5">
+     <thead>
+       <tr>
+         <th>Name</th>
+         <th>Total Prizes</th>
+         <th>Start Time</th>
+         <th>Status</th>
+       </tr>
+     </thead>
+     <tbody style="cursor:pointer;">
+      <tr *ngFor="let tournament of tournaments" [routerLink]="[tournament._id]">
+         <td><span>{{tournament.name}}</span></td>
+         <td><span>{{tournament.totalPrizes}} {{tournament.currency | uppercase }}</span></td>
+         <td><span>{{tournament.startTime | date:'dd MMM - h:mm a'}}</span></td>
+         <td><span>{{tournament.statusText}}</span></td>
+       </tr>
+     </tbody>
+   </table>
+    
+    
+  
+     
+    
+   </nb-card-body>
+</nb-card>

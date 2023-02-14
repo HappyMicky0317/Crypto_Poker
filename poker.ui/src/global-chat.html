@@ -1,0 +1,42 @@
+<template>
+  <require from="./lib/number-format"></require>
+
+  <div style="border: 1px solid gray; margin-top: 10px; padding: 2px;">
+    <div class="global-chatbox-header" style="background-color:lightgray">
+      <span class="global-chat-header-icon"><span style="margin-left:10px">Troll Box</span></span>
+      <button class="btn btn-primary btn-xs" click.delegate="showChat=!showChat" style="float: right;">${showChat ? 'Hide':'Show'}</button>
+      <!-- <button class="btn btn-primary btn-xs" click.delegate="toggleOnline()" style="float: right;">Online Now</button> -->
+    </div>
+    
+    
+    <div id="global-chatbox-container" show.bind="showChat">
+      <div id="global-chatbox" ref="globalChatboxElem" scrolltop.bind="globalChatboxElemScrollHeight" >
+        <p repeat.for="chat of globalChatMessages" class="chatRow">
+          <span class="chatScreenName">${chat.screenName}:</span>
+          <span class="global-chatMessage">${chat.message}</span>
+        </p>                 
+      </div>
+      <div id="global-online" show.bind="showUsers">
+        <div repeat.for="user of users">
+          
+          <span class="f16" show.bind="user.countryCode"><span class="flag ${user.countryCode}" title.bind="user.country"> </span></span>    
+          <i class="fa fa-user-circle" show.bind="!user.countryCode"></i> 
+
+          <span>${user.screenName}<span show.bind="user.showYouLabel"> (You)</span> </span>   
+          
+          
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+    
+    <div show.bind="showChat" >
+      <input type="text" placeholder="enter chat message" class="form-control input-sm" keyup.delegate="globalChatKeyPress($event)" value.bind="globalChatInput"/>
+    </div>
+
+  </div>
+
+  <div>
+      
+  </div>
+</template>

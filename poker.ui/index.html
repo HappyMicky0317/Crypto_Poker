@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Online Crypto Poker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="http://3.126.18.118:9000/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+  <noscript id="deferred-styles">    
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </noscript>
+  <style>
+    .splash {
+      text-align: center;
+      margin: 20% 0 0 0;
+      box-sizing: border-box;
+    }
+
+    .body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .splash .message {
+      text-transform: uppercase;
+    }
+
+    .splash .fa-spinner {
+      text-align: center;
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    .spinner {
+      margin: 10px auto 0;
+      width: 70px;
+      text-align: center;
+      display: inline-block;
+    }
+
+    .spinner>div {
+      width: 18px;
+      height: 18px;
+      background-color: #333;
+
+      border-radius: 100%;
+      display: inline-block;
+      -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+      animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    }
+
+    .spinner .bounce1 {
+      -webkit-animation-delay: -0.32s;
+      animation-delay: -0.32s;
+    }
+
+    .spinner .bounce2 {
+      -webkit-animation-delay: -0.16s;
+      animation-delay: -0.16s;
+    }
+
+    @-webkit-keyframes sk-bouncedelay {
+      0%,
+      80%,
+      100% {
+        -webkit-transform: scale(0)
+      }
+      40% {
+        -webkit-transform: scale(1.0)
+      }
+    }
+
+    @keyframes sk-bouncedelay {
+      0%,
+      80%,
+      100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      }
+      40% {
+        -webkit-transform: scale(1.0);
+        transform: scale(1.0);
+      }
+    }
+  </style>
+</head>
+
+<body aurelia-app="main">
+  <div class="splash">
+    
+     <img src="http://3.126.18.118:9000/images/logo3.png" />
+   
+    <div class="message">Loading...
+      <div class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
+    </div>
+
+  </div>
+
+  
+  <script>
+    var loadDeferredStyles = function () {
+      
+      var addStylesNode = document.getElementById("deferred-styles");                  
+      addStylesNode.parentElement.removeChild(addStylesNode);
+      document.head.insertAdjacentHTML('beforeend', addStylesNode.textContent );
+    };
+    var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0); });
+    else window.addEventListener('load', loadDeferredStyles);
+  </script>
+
+  <script src="scripts/vendor-bundle.js" data-main="aurelia-bootstrapper" async></script>
+  <style>
+    body:after {
+      content: url('http://3.126.18.118:9000/images/bg-green.png') url('http://3.126.18.118:9000/images/default-user.png') url('http://3.126.18.118:9000/images/chip.png') url('http://3.126.18.118:9000/images/cards-sprite.png');
+      display: none;
+    }
+  </style>
+</body>
+
+</html>

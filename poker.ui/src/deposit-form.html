@@ -1,0 +1,108 @@
+<template>
+    <require from="bootstrap-slider/dist/css/bootstrap-slider.min.css"></require>
+    <require from="./lib/number-format"></require>
+    <require from="./lib/crypto-format"></require>
+    <require from='./resources/attributes/visibility-custom-attribute'></require>
+
+
+    <div if.bind="!fundingWindowModel">
+        <span> Currency: </span>
+        <select class="form-control uppercase" ref="currencySelect" value.bind="currency" change.delegate="currencyChanged()" style="width:auto;display:inline-block;">
+            <option repeat.for="currency of currencies" value="${currency}" style="padding:10px;">${currency.toUpperCase()} </option>
+        </select>
+        <i if.bind="currency" class="currency-icon currency-${currency} "></i>
+    </div>
+
+    <h4 id="account-funded-info" if.bind="fundingWindowModel">
+        <i if.bind="isCrypto" class="currency-icon currency-${currency} "></i> ${infoMessage}
+    </h4>
+    
+    <p if.bind="fundingWindowModel" class="funding-close-info" show.bind="isCrypto && !playerStack">You do not need to keep this window open. You will be notified when your account has been credited.</p>
+
+      <div class="funding-item" show.bind="isCrypto && !playerStack">
+        
+        <div style="display: inline-block;vertical-align: top;" >
+          
+          <span class="uppercase">${currency}</span>
+          <span> Payment Address: </span>
+      
+          <span show.bind="copied" style="float: right;">Copied!</span>
+          <span class="${copied ? 'drawn':''}"></span>
+          <svg style="float: right; margin-right: 4px;" version="1.1" id="tick" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            viewBox="0 0 37 37" style="enable-background:new 0 0 37 37;" xml:space="preserve" height="16px" width="16px">
+            <path class="circ path" style="fill:none;stroke:#000;stroke-width:3;stroke-linejoin:round;stroke-miterlimit:10;" d="
+                    M30.5,6.5L30.5,6.5c6.6,6.6,6.6,17.4,0,24l0,0c-6.6,6.6-17.4,6.6-24,0l0,0c-6.6-6.6-6.6-17.4,0-24l0,0C13.1-0.2,23.9-0.2,30.5,6.5z"
+            />
+            <polyline class="tick path" style="fill:none;stroke:#000;stroke-width:3;stroke-linejoin:round;stroke-miterlimit:10;" points="
+                    11.6,20 15.9,24.2 26.4,13.8 " />
+          </svg>
+        
+        
+          <div>
+            <input class="funding-payment-address-input" readonly="readonly" value.bind="paymentAddress" placeholder="Retrieving payment address - please wait"
+              ref="paymentAddressInput" />
+            <i class="fa fa-spinner fa-spin" show.bind="!paymentAddress"></i>
+            <i class="fa fa-clipboard" show.bind="paymentAddress" click.delegate="copyAddress()"></i>
+        
+          </div>
+
+          <div class="funding-item" id="waiting-for-funding" css="visibility: ${paymentAddress && !funded ? 'visible':'hidden'}">
+              <span class="waiting-on-payment" ref="waitingOnPayment">${checkingForPaymentLabel}</span>
+      
+            </div>
+      
+            <div class="funding-item" show.bind="paymentAddress && !funded">
+              <span>Amount Received: ${ paymentReceived | cryptoFormat:currency}</span>
+              <span class="uppercase"> ${currency}
+                <i class="currency-icon currency-${currency}"></i>
+              </span>
+            </div>
+        </div>
+
+        <div class="funding-window-qr-code" css="visibility: ${fundAccountResult.addressQrCode ? 'visible':'hidden'}">
+          <img alt="qrCode" src.bind="fundAccountResult.addressQrCode"  />
+        </div>
+
+      </div>
+      <div class="funding-item" show.bind="fundingWindowModel && !isCrypto && !funded && !playerStack">
+        <p>Please wait while we fund your account with play money</p>
+        <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+      </div>
+
+      <div class="funding-item" id="funding-payment-address" css="visibility: ${paymentAddress && !funded ? 'visible':'hidden'}">
+
+
+      </div>
+
+      
+
+      <div class="funding-item" show.bind="funded">
+        <span>${isCrypto ? 'Confirmed:' : 'Amount'}</span>
+        <span style="border: 1px solid black; font-size: 1.5em; padding: 0px 10px">
+          <span  if.bind="isCrypto">${ paymentReceived | cryptoFormat:currency}</span>
+          <span  if.bind="!isCrypto">${ paymentReceived | numberFormat}</span>
+          <span class="uppercase" if.bind="isCrypto"> ${currency}</span>
+          <i class="fa fa-check"></i>
+        </span>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div show.bind="playerStack && seatnum != null">Your current buy-in amount: <b>${buyInAmount}</b></div>
+        </div>
+
+      </div>
+      <div class="row" style="margin-top:10px;background-color: lightgray; padding: 10px;" css="visibility: ${playerStack && seatnum != null ? 'visible':'hidden'}" >
+        <div class="col-lg-3 col-lg-offset-1" id="join-amount-slider-container">
+          <input ref="joinAmountInput" type="text"/>
+
+        </div>
+
+      </div>
+
+      <div if.bind="!hideCloseControls" style="margin-top: 20px;">
+        <span click.trigger="controller.cancel()" class="options-btn" style="margin-right: 20px;">Close</span>        
+        <span click.trigger="controller.ok(getBuyInAmount())" show.bind="playerStack && seatnum != null" class="options-btn funding-window-sit-down-button">Sit Down at Seat ${seatnum+1}</span>
+      </div>
+    
+   
+</template>

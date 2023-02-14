@@ -1,0 +1,103 @@
+<template>
+  <ux-dialog>    
+    <ux-dialog-body>
+      <div style="max-height:600px;overflow: auto;overflow-x: hidden;">
+          <div>
+              <i click.trigger="controller.ok()" class="fa fa-window-close" style="float:right; margin-right: 10px;"></i>  
+            <h3>${name} <i class="fa fa-trophy" aria-hidden="true"></i></h3>
+              
+          </div>
+      
+          <p show.bind="loading"><i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></p>
+    
+          <div show.bind="!loading">
+            <div class="row">
+              <div class="col-lg-12">
+                <ul>
+                  <li>Currency: <span class="uppercase">${view.currency}</span> <i class="currency-icon currency-${view.currency}"></i></li>
+                  <li>Buy in: <span show.bind="view.buyIn">${view.buyIn}</span> <span show.bind="!view.buyIn">${view.buyIn}Free</span> </li>
+                  <li>Players per table: ${view.playersPerTable}</li>
+                  <li>Starting Chips: ${view.startingChips}</li>
+                  <li>Time to Act: ${view.timeToActSec} seconds</li>
+                  <li>Late Registration: ${view.lateRegistrationMin} minutes</li>
+                  <li>Evict after Idle: ${view.evictAfterIdleMin} minutes</li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              
+              <div class="col-lg-6">
+                  <h4>Prizes - ${totalPrize} <span class="uppercase">${view.currency}</span> <i class="currency-icon currency-${view.currency}"></i></h4>
+                
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Prize</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr repeat.for="prize of prizes">
+                      <td>${prize.placing}</td>
+                      <td>${prize.prize} <span class="uppercase">${view.currency}</span> <i class="currency-icon currency-${view.currency}"></i></td>                  
+                    </tr>
+                  </tbody>
+                </table>
+
+                
+    
+                <h4>Blinds</h4>
+                  <table class="table table-striped table-bordered table-hover table-condensed">
+                      <thead>
+                        <tr>
+                          <th>Small</th>
+                          <th>Big</th>
+                          <th>Time</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr repeat.for="i of view.blindConfig.length">
+                          <td><span>${$parent.view.blindConfig[i].smallBlind}</span></td>
+                          <td><span>${$parent.view.blindConfig[i].bigBlind}</span></td>
+                          <td><span>${$parent.view.blindConfig[i].timeMin} min</span></td>
+                          
+                        </tr>
+                      </tbody>
+                    </table>
+               
+    
+              </div>
+              
+              <div class="col-lg-5">
+                <h4>Results</h4>
+                
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>User</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr repeat.for="result of view.results">
+                      <td>${result.placing}</td>
+                      <td>${result.screenName} <span show.bind="result.stack" style="float:right;">${result.stack}</span></td>                  
+                    </tr>
+                  </tbody>
+                </table>
+                <p show.bind="!view.results.length">Results will be shown here when the tournament is running</p>
+              </div>
+              
+              
+              
+            </div>
+           
+          </div>
+      </div>
+      
+    </ux-dialog-body>
+    <!-- <ux-dialog-footer>
+      <button click.trigger="controller.ok()">Ok</button>
+    </ux-dialog-footer> -->
+  </ux-dialog>
+</template>

@@ -1,0 +1,334 @@
+$cdn: '';
+@function multiply($index) {
+  @return #{1.9230769230769230769230769230769 * $index}#{'%'};
+}
+.sprite {
+  background-image: url($cdn + 'images/cards-sprite.png');
+  background-repeat: no-repeat;
+  display: block;
+  background-size: 5300%;
+  width: 150px;
+  height: 210px;
+}
+.sprite-small{
+  width: 45.71px;
+  height: 64px;
+}
+
+.sprite-10C-150 {
+  
+  background-position: 0 0;
+}
+
+.sprite-10D-150 {
+  
+  
+  background-position: multiply(1) 0;
+}
+
+.sprite-10H-150 {
+  
+  
+  background-position: multiply(2) 0;
+}
+
+.sprite-10S-150 {
+  
+  
+  background-position: multiply(3) 0;
+}
+
+.sprite-2C-150 {
+  
+  
+  background-position: multiply(4) 0;
+}
+
+.sprite-2D-150 {
+  
+  
+  background-position: multiply(5) 0;
+}
+
+.sprite-2H-150 {
+  
+  
+  background-position: multiply(6) 0;
+}
+
+.sprite-2S-150 {
+  
+  
+  background-position: multiply(7) 0;
+}
+
+.sprite-3C-150 {
+  
+  
+  background-position: multiply(8) 0;
+}
+
+.sprite-3D-150 {
+  
+  
+  background-position: multiply(9) 0;
+}
+
+.sprite-3H-150 {
+  
+  
+  background-position: multiply(10) 0;
+}
+
+.sprite-3S-150 {
+  
+  
+  background-position: multiply(11) 0;
+}
+
+.sprite-4C-150 {
+  
+  
+  background-position: multiply(12) 0;
+}
+
+.sprite-4D-150 {
+  
+  
+  background-position: multiply(13) 0;
+}
+
+.sprite-4H-150 {
+  
+  
+  background-position: multiply(14) 0;
+}
+
+.sprite-4S-150 {
+  
+  
+  background-position: multiply(15) 0;
+}
+
+.sprite-5C-150 {
+  
+  
+  background-position: multiply(16) 0;
+}
+
+.sprite-5D-150 {
+  
+  
+  background-position: multiply(17) 0;
+}
+
+.sprite-5H-150 {
+  
+  
+  background-position: multiply(18) 0;
+}
+
+.sprite-5S-150 {
+  
+  
+  background-position: multiply(19) 0;
+}
+
+.sprite-6C-150 {
+  
+  
+  background-position: multiply(20) 0;
+}
+
+.sprite-6D-150 {
+  
+  
+  background-position: multiply(21) 0;
+}
+
+.sprite-6H-150 {
+  
+  
+  background-position: multiply(22) 0;
+}
+
+.sprite-6S-150 {
+  
+  
+  background-position: multiply(23) 0;
+}
+
+.sprite-7C-150 {
+  
+  
+  background-position: multiply(24) 0;
+}
+
+.sprite-7D-150 {
+  
+  
+  background-position: multiply(25) 0;
+}
+
+.sprite-7H-150 {
+  
+  
+  background-position: multiply(26) 0;
+}
+
+.sprite-7S-150 {
+  
+  
+  background-position: multiply(27) 0;
+}
+
+.sprite-8C-150 {
+  
+  
+  background-position: multiply(28) 0;
+}
+
+.sprite-8D-150 {
+  
+  
+  background-position: multiply(29) 0;
+}
+
+.sprite-8H-150 {
+  
+  
+  background-position: multiply(30) 0;
+}
+
+.sprite-8S-150 {
+  
+  
+  background-position: multiply(31) 0;
+}
+
+.sprite-9C-150 {
+  
+  
+  background-position: multiply(32) 0;
+}
+
+.sprite-9D-150 {
+  
+  
+  background-position: multiply(33) 0;
+}
+
+.sprite-9H-150 {
+  
+  
+  background-position: multiply(34) 0;
+}
+
+.sprite-9S-150 {
+  
+  
+  background-position: multiply(35) 0;
+}
+
+.sprite-AC-150 {
+  
+  
+  background-position: multiply(36) 0;
+}
+
+.sprite-AD-150 {
+  
+  
+  background-position: multiply(37) 0;
+}
+
+.sprite-AH-150 {
+  
+  
+  background-position: multiply(38) 0;
+}
+
+.sprite-AS-150 {
+  
+  
+  background-position: multiply(39) 0;
+}
+
+.sprite-JC-150 {
+  
+  
+  background-position: multiply(40) 0;
+}
+
+.sprite-JD-150 {
+  
+  
+  background-position: multiply(41) 0;
+}
+
+.sprite-JH-150 {
+  
+  
+  background-position: multiply(42) 0;
+}
+
+.sprite-JS-150 {
+  
+  
+  background-position: multiply(43) 0;
+}
+
+.sprite-KC-150 {
+  
+  
+  background-position: multiply(44) 0;
+}
+
+.sprite-KD-150 {
+  
+  
+  background-position: multiply(45) 0;
+}
+
+.sprite-KH-150 {
+  
+  
+  background-position: multiply(46) 0;
+}
+
+.sprite-KS-150 {
+  
+  
+  background-position: multiply(47) 0;
+}
+
+.sprite-QC-150 {
+  
+  
+  background-position: multiply(48) 0;
+}
+
+.sprite-QD-150 {
+  
+  
+  background-position: multiply(49) 0;
+}
+
+.sprite-QH-150 {
+  
+  
+  background-position: multiply(50) 0;
+}
+
+.sprite-QS-150 {
+  
+  
+  background-position: multiply(51) 0;
+}
+
+.sprite-Red_Back-150 {
+  
+  
+  background-position: multiply(52) 0;
+}
+

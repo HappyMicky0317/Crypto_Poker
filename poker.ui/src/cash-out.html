@@ -1,0 +1,47 @@
+<template>
+  <require from="./withdrawl-form"></require>
+  <require from="./deposit-form"></require>
+  <require from="./payment-history"></require>
+
+  <ux-dialog style="min-height: 450px;min-width: 450px">
+    <ux-dialog-body>
+      <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#withdraw">Withdraw Funds</a></li>
+        <li><a data-toggle="tab" href="#deposit" id="depositTab">Deposit Funds</a></li>
+        <li><a data-toggle="tab" role="tab" href="#paymentHistory" id="pHistory">Payment History</a></li>
+
+
+      </ul>
+      <div class="tab-content">
+        <div id="withdraw" class="tab-pane fade in active">
+          <div class="row well">
+            <div class="col-lg-12">
+              <withdrawl-form></withdrawl-form>
+            </div>
+          </div>
+        </div>
+
+        <div id="deposit" class="tab-pane fade in">
+          <div class="row well">
+            <div class="col-lg-12">
+              <deposit-form></deposit-form>
+            </div>
+          </div>
+        </div>
+
+        <div id="paymentHistory" class="tab-pane fade">
+          <div class="row well">
+            <div class="col-lg-12">
+              <payment-history></payment-history>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+    </ux-dialog-body>
+
+  </ux-dialog>
+</template>

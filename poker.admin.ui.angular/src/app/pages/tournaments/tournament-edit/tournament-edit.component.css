@@ -1,0 +1,10 @@
+.input-group, .form-group {
+    margin-bottom: 5rem;
+  }
+  input.ng-invalid.ng-touched{
+    border: 1px solid red;
+  }
+  .help-block{
+    color: red;
+  }
+ 

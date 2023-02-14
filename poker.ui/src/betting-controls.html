@@ -1,0 +1,36 @@
+﻿<template>
+  <require from="bootstrap-slider/dist/css/bootstrap-slider.min.css"></require>
+  <div id="betting-shortcuts" show.bind="myturn && canCall">
+    <span class="btn" data-amount.bind="betShortcut1Amt" click.delegate="handleBetShortcut(betShortcut1Amt)">${betShortcut1}</span>
+    <span class="btn" click.delegate="handleBetShortcut(betShortcut2Amt)">${betShortcut2}</span>
+    <span class="btn" click.delegate="handleBetShortcut(betShortcut3Amt)">${betShortcut3}</span>
+    <span class="btn" click.delegate="handleBetShortcut(betShortcut4Amt)">${betShortcut4}</span>
+  </div>
+  
+
+  <button class="btn bet-action-button" show.bind="myturn || foldBtnDisabled" id="fold" click.delegate="fold()" disabled.bind="foldBtnDisabled">
+    <span show.bind="!foldBtnDisabled">Fold</span>
+    <span show.bind="foldBtnDisabled"><i class="fa fa-spinner fa-spin"></i></span>
+  </button>
+
+  <button class="btn bet-action-button" id="check" show.bind="(myturn && canCall) || callBtnDisabled" click.delegate="call()" disabled.bind="callBtnDisabled">
+    <div show.bind="!callBtnDisabled" class="action-button-action">${callButtonText}</div>
+    <div show.bind="!callBtnDisabled" class="action-button-info">${callButtonInfo}</div>
+    <span show.bind="callBtnDisabled"><i class="fa fa-spinner fa-spin"></i></span>
+  </button>
+
+
+  <button class="btn bet-action-button" id="bet" show.bind="myturn || betBtnDisabled" click.delegate="bet()" disabled.bind="betBtnDisabled">
+    <div show.bind="!betBtnDisabled" class="action-button-action">${betButtonText}</div>
+    <div show.bind="!betBtnDisabled" class="action-button-info">${betButtonInfo}</div>
+    <span show.bind="betBtnDisabled"><i class="fa fa-spinner fa-spin"></i></span>
+  </button>
+
+  <!--<input min.bind="sliderMin" max.bind="sliderMax" step.bind="sliderStep" type="range" id="bet_slider" show.bind="canCall" change.delegate="betSliderChanged()" input.delegate="betSliderChanged()" value.bind="betSlider">-->  
+  <div id="bet_slider" show.bind="myturn && canCall">
+    <input  ref="sliderInput" type="text" />
+  </div>
+  
+  
+  <input type="text" id="bet-amount" show.bind="myturn && canCall" keyup.trigger="betInputChanged()" value.bind="betInput" onfocusout.bind="betInputFocousout()">
+</template>

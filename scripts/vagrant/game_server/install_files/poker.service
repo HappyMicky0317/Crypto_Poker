@@ -1,0 +1,14 @@
+[Unit]
+Description=poker.service
+
+[Service]
+WorkingDirectory=/opt/poker/poker.engine
+ExecStart=/usr/bin/node /opt/poker/poker.engine/build/poker.engine/src/app.js
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=10
+KillSignal=SIGINT
+SyslogIdentifier=poker.service
+
+[Install]
+WantedBy=multi-user.target

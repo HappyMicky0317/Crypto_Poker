@@ -1,0 +1,1 @@
+{"version":3,"file":"JoinTableRequest.js","sourceRoot":"","sources":["../../../../../src/model/table/JoinTableRequest.ts"],"names":[],"mappings":";;;AAAA,MAAa,gBAAgB;IAEzB,YAAmB,IAAY,EAAS,IAAW,EAAS,UAAiB,EAAS,QAAe,EAAS,KAAa;QAAxG,SAAI,GAAJ,IAAI,CAAQ;QAAS,SAAI,GAAJ,IAAI,CAAO;QAAS,eAAU,GAAV,UAAU,CAAO;QAAS,aAAQ,GAAR,QAAQ,CAAO;QAAS,UAAK,GAAL,KAAK,CAAQ;IAC3H,CAAC;CACJ;AAJD,4CAIC"}

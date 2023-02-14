@@ -1,0 +1,78 @@
+<nb-card>
+  <nb-card-header>
+
+  </nb-card-header>
+  <nb-card-body>
+      <div class="row" *ngIf="errorMessage">
+          <div class="col-xs-12 col-md-6">
+            <div class="alert alert-danger">{{errorMessage}}</div>
+          </div>  
+        </div>
+    <span *ngIf="loading; else mainContent">Loading...<i class="fa fa-spin fa-sync"></i></span>  
+    <ng-template #mainContent>      
+      <div class="row">
+          <div class="col-sm-2 form-group">
+            <button class="btn btn-primary btn-tn" (click)="add()">Add</button>
+            </div>           
+      </div>
+      
+      
+  <table class="table table-striped table-bordered table-hover table-condensed small-font">
+    <thead>
+    <tr>
+      <th>Name</th>      
+      <th>Master Acct</th>      
+      <th>Seed Amount</th>           
+      <th>Min Deposit</th>           
+      <th>Reqd Num Of Confs</th>     
+      <th>Min Withdrawl</th>      
+      <th>Flag Amount</th>
+      <th>Processing Delay (min)</th>
+      <th>Withdrawl Limit Interval (min)</th>
+      <th>Withdrawl Limit Number</th>      
+      <th>Contract Address<br>(eth only)</th>      
+      <th>Gas Price<br>gwei</th>     
+      <th>Gas Limit</th>           
+      <th>xpub</th>   
+      <th>Withdrawl Fee<br>(sats)</th>  
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let token of currencyConfigs">
+      <td><span *ngIf="!token.edit || token._id" class="uppercase">{{token.name}}</span> <input *ngIf="token.edit && !token._id"  [(ngModel)]="token.name" class="form-control input-sm" placeholder="enter token name name"/></td>
+      <td><span *ngIf="!token.edit">{{token.masterAccountPublic | truncate:[20, '...']}}</span> <input *ngIf="token.edit" [(ngModel)]="token.masterAccountPublic"  class="form-control input-sm"/></td>      
+      <td><span *ngIf="!token.edit">{{token.masterSeedAmount}}</span> <input *ngIf="token.edit" [(ngModel)]="token.masterSeedAmount" class="form-control input-sm" placeholder=""/></td>                  
+      <td><span *ngIf="!token.edit">{{token.minimumDeposit}}</span> <input *ngIf="token.edit" [(ngModel)]="token.minimumDeposit" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.requiredNumberOfConfirmations}}</span> <input *ngIf="token.edit" [(ngModel)]="token.requiredNumberOfConfirmations" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.minimumWithdrawl}}</span> <input *ngIf="token.edit" [(ngModel)]="token.minimumWithdrawl" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.flagAmount}}</span> <input *ngIf="token.edit" [(ngModel)]="token.flagAmount" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.processingDelayMin}}</span> <input *ngIf="token.edit" [(ngModel)]="token.processingDelayMin" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.withdrawlLimitPerMin}}</span> <input *ngIf="token.edit" [(ngModel)]="token.withdrawlLimitPerMin" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.withdrawlLimitNumber}}</span> <input *ngIf="token.edit" [(ngModel)]="token.withdrawlLimitNumber" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.contractAddress | truncate:[20, '...']}}</span> <input *ngIf="token.edit" [(ngModel)]="token.contractAddress"  class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.gasPriceGwei}}</span> <input *ngIf="token.edit && token.name == 'eth'" [(ngModel)]="token.gasPriceGwei" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.gasLimit}}</span> <input *ngIf="token.edit && token.name == 'eth'" [(ngModel)]="token.gasLimit" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.xpub | truncate:[20, '...']}}</span> <input *ngIf="token.edit" [(ngModel)]="token.xpub" class="form-control input-sm" placeholder=""/></td>      
+      <td><span *ngIf="!token.edit">{{token.withdrawlFee}}</span> <input *ngIf="token.edit" [(ngModel)]="token.withdrawlFee" class="form-control input-sm" placeholder=""/></td>      
+      
+      <td>
+        <div style="float: right;">
+          <button class="btn btn-primary btn-tn" (click)="editOrSave(token)">{{token.edit ? 'Save':'Edit'}} <i class="fa fa-spinner fa-spin" *ngIf="token.saving"></i></button> 
+          
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+     
+        
+
+
+    </ng-template>
+    
+    
+
+  </nb-card-body>
+</nb-card>
+

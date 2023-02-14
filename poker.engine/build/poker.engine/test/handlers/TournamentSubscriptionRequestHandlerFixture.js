@@ -1,0 +1,50 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const tournament_1 = require("../../src/model/tournament");
+const TournamentSubscriptionRequestHandler_1 = require("../../src/handlers/TournamentSubscriptionRequestHandler");
+const test_helpers_1 = require("../test-helpers");
+const ClientMessage_1 = require("../../../poker.ui/src/shared/ClientMessage");
+const mockWebSocket_1 = require("../mockWebSocket");
+const WebSocketHandle_1 = require("../../src/model/WebSocketHandle");
+const User_1 = require("../../src/model/User");
+const TournamentLogic_1 = require("../../src/handlers/TournamentLogic");
+const decimal_1 = require("../../../poker.ui/src/shared/decimal");
+var assert = require('assert');
+var substitute = require('jssubstitute');
+describe('TournamentSubscriptionRequestHandler', () => {
+    let handler;
+    let tournament;
+    let tournamentLogic;
+    let dataRepository;
+    beforeEach(function () {
+        let tournament = new tournament_1.Tournament();
+        tournament._id = "id1";
+        tournament.housePrize = '0.5';
+        tournament.prizes = ['0.5', '0.25', '0.10', '0.05', '0.04', '0.03', '0.02', '0.01'];
+        substitute.throwErrors();
+        dataRepository = test_helpers_1.TestHelpers.getDataRepository();
+        dataRepository.getTournaments = (args) => Promise.resolve([tournament]);
+        dataRepository.getTournamentRegistrations = (guid) => Promise.resolve([{ tournamentId: 'id1', userGuid: 'guid1' }]);
+        dataRepository.getTournamentPlayerCount = (id) => Promise.resolve(20);
+        dataRepository.getTournamentBuyIns = () => { return Promise.resolve(new decimal_1.Decimal(0.2)); };
+        tournamentLogic = substitute.for(new TournamentLogic_1.TournamentLogic(null, null, null, null, null, null));
+        handler = new TournamentSubscriptionRequestHandler_1.TournamentSubscriptionRequestHandler(dataRepository, tournamentLogic);
+    });
+    it('should_subscribe_to_tournament', async () => {
+        let message = new ClientMessage_1.ClientMessage();
+        message.tournamentSubscriptionRequest = new ClientMessage_1.TournamentSubscriptionRequest();
+        let socket = new mockWebSocket_1.MockWebSocket();
+        socket.readyState = 1;
+        let handle = new WebSocketHandle_1.WebSocketHandle(socket);
+        handle.user = new User_1.User();
+        handle.user.guid = 'guid1';
+        await handler.run(handle, message);
+        let data = socket.getLastMessage();
+        assert.equal(data.tournamentSubscriptionResult.tournaments.length, 1);
+        assert.equal(data.tournamentSubscriptionResult.tournaments[0].id, "id1");
+        assert.equal(data.tournamentSubscriptionResult.tournaments[0].totalPrize, "0.7");
+        assert.equal(data.tournamentSubscriptionResult.tournaments[0].joined, true);
+        tournamentLogic.receivedWith('addSubscriber', substitute.arg.matchUsing((arg) => { return arg != null && arg == handle; }));
+    });
+});
+//# sourceMappingURL=TournamentSubscriptionRequestHandlerFixture.js.map

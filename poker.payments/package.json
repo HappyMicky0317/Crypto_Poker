@@ -1,0 +1,52 @@
+{
+  "name": "poker.payments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@dashevo/dashcore-lib": "^0.18.0",
+    "axios": "^0.24.0",
+    "bip32": "^2.0.6",
+    "bitcoinjs-lib": "^5.2.0",
+    "blockcypher": "^0.2.0",
+    "body-parser": "^1.18.3",
+    "bs58check": "^2.1.2",
+    "cors": "^2.8.4",
+    "decimal.js": "^10.0.1",
+    "dotenv": "^6.0.0",
+    "ethereumjs-tx": "^1.3.3",
+    "ethereumjs-util": "^5.2.0",
+    "ethereumjs-wallet": "^0.6.5",
+    "express": "^4.16.3",
+    "express-validator": "^5.3.0",
+    "lodash": "^4.17.15",
+    "log4js": "^3.0.5",
+    "mongodb": "^2.2.33",
+    "promise-queue-timeout": "^2.2.6",
+    "request": "^2.88.0",
+    "web3": "^1.3.6",
+    "ws": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/bip32": "^1.0.0",
+    "@types/bitcoinjs-lib": "^4.0.0",
+    "@types/bitcore-lib": "^0.15.1",
+    "@types/dotenv": "^4.0.3",
+    "@types/ethereumjs-util": "^5.2.0",
+    "@types/express": "^4.16.0",
+    "@types/lodash": "^4.14.116",
+    "@types/mocha": "^5.2.5",
+    "@types/mongodb": "^2.2.19",
+    "@types/node": "^10.17.14",
+    "@types/ws": "^6.0.1",
+    "jssubstitute": "github:wallaceturner/jsSubstitute",
+    "mocha": "^5.2.0",
+    "mongo-clean": "^1.2.2",
+    "source-map-support": "^0.5.9"
+  },
+  "scripts": {
+    "test": "mocha --require source-map-support/register --recursive -w ./build/poker.payments/test --timeout 10000"
+  }
+}

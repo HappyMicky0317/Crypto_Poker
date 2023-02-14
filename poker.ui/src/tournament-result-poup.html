@@ -1,0 +1,35 @@
+<template>
+  <ux-dialog>    
+    <ux-dialog-body>
+      <h3>${view.tournamentName} <i class="fa fa-trophy" aria-hidden="true"></i></h3>
+      
+      <p class="alert alert-success">
+        You finished the tournament in ${placingSuffix} place
+      </p>
+
+      <div show.bind="view.rebuyAmount">
+      
+        <div show.bind="view.canRebuy">
+          <p>Do you want to Rebuy? Rebuys are added to the prize total.</p>
+      
+          <button click.trigger="rebuy()" class="btn btn-info">Rebuy ${view.rebuyAmount} <span class="uppercase">${view.currency}</span>
+            <i class="currency-icon currency-${view.currency}"></i></button>
+        </div>
+      
+        <div class="alert alert-danger" show.bind="!view.canRebuy">
+          <p>Rebuy is available but you do not have sufficient funds!</p>
+          <p>The rebuy is ${view.rebuyAmount} <span class="uppercase">${view.currency}</span>
+            <i class="currency-icon currency-${view.currency}"></i>
+        
+            <!-- <button click.trigger="openDepositWindow()" class="btn btn-info" show.bind="!view.isFunded">Deposit Now!<i class="fa fa-money"></i></button>             -->
+          </p>
+        </div>
+      
+      </div>
+      
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button click.trigger="controller.ok()">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

@@ -1,0 +1,39 @@
+<template>
+    <form>
+
+        <div class="alert alert-warning">
+          Only NEW customers should Register here. If you have signed up already please Login to join a Tournament.
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-control" value.bind="email" placeholder="Your email" disabled.bind="registering || result.success">
+        </div>
+
+        <div class="form-group">
+          <label>Screen name</label>
+          <input type="text" class="form-control" value.bind="screenName" placeholder="Your table name as seen by others" disabled.bind="registering || result.success">
+        </div>
+    
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" class="form-control" value.bind="password" placeholder="Your password" disabled.bind="registering || result.success">
+        </div> 
+        
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" class="form-control" value.bind="confirmPassword" placeholder="Confirm password" disabled.bind="registering || result.success">
+        </div>
+    
+        <div class="alert alert-danger form-group" show.bind="result.errorMessage && !registering">
+          ${result.errorMessage}
+        </div>
+        <div class="alert alert-success form-group" show.bind="!registering && result.success">
+            <p>Successfully registered! Please check your email for your activation link.</p>
+          </div>
+    
+        <div class="form-group">
+          <button click.trigger="register()" disabled.bind="registering || result.success" class="btn btn-primary">Register <i class="fa fa-refresh fa-spin" show.bind="registering"></i></button>
+        </div>
+      </form>
+</template>

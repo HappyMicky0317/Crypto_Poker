@@ -1,0 +1,1 @@
+{"version":3,"file":"tournament.js","sourceRoot":"","sources":["../../../../src/model/tournament.ts"],"names":[],"mappings":";;;AAEA,MAAa,UAAU;IAAvB;QAaI,qBAAgB,GAAY,KAAK,CAAC;IAYtC,CAAC;CAAA;AAzBD,gCAyBC;AACD,MAAa,WAAW;IAEpB,YAAmB,UAAkB,EAAS,QAAgB,EAAS,OAAe;QAAnE,eAAU,GAAV,UAAU,CAAQ;QAAS,aAAQ,GAAR,QAAQ,CAAQ;QAAS,YAAO,GAAP,OAAO,CAAQ;IAGtF,CAAC;CACJ;AAND,kCAMC"}

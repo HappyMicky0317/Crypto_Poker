@@ -1,0 +1,86 @@
+<template>
+  <!-- <a class="github-fork-ribbon" target="_blank" href="https://github.com/steerc2217/Crypto_Poker" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a> -->
+
+  <require from="bootstrap/css/bootstrap.css"></require>
+  <require from="./style.css"></require>  
+  <require from="./cards.css"></require>  
+  <require from="./flags16.css"></require>  
+
+  <div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="../" class="navbar-brand"><span class="nav-logo"/></a>
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-main">
+      <ul class="nav navbar-nav">
+        <!-- <li><a route-href="route: home">Tables</a></li> -->
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes" click.delegate="openMyAccount()">My Account</a></li>
+        <li class="dropdown" show.bind="!apiService.authenticated"><a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes" click.delegate="openLoginWindow()">Login</a></li>
+        <li><a href="#" route-href="route: faq">Help/FAQ</a></li>      
+        <li class="dropdown hidden-md hidden-sm hidden-xs">
+            
+          <a class="dropdown-toggle " data-toggle="dropdown" href="#"> </span>Buy SOLANA <span class="nav-solana-icon"></span> 
+
+          <span class="caret"></span>
+        
+        </a>
+          <ul class="dropdown-menu">
+            <li></span> <a href="https://ftx.com/referrals#a=pokeronsol" target="_blank"><span class="coinspot-icon"></span> ftx.xom</a></li>
+            <li><a href="https://accounts.binance.com/en/register?ref=UQV5091U " target="_blank"><span class="bitpanda-icon"></span> binance.com</a></li>
+            <!-- <li><a href="https://www.dash.org/direct-purchase/" target="_blank">Other Vendors</a></li> -->
+          </ul>
+        </li>  
+      </ul>
+<!-- 
+      <ul class="nav navbar-nav navbar-right hidden-md hidden-sm hidden-xs">
+        <li><a href="https://www.dash.org/" target="_blank">Instant Payments by <span class="dash-logo-header"></span></a></li>
+        
+      </ul> -->
+      
+    </div>
+  </div>
+</div>
+  
+  
+  <!--<div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12" style="background-color: #fff">
+        <compose view="info.html" containerless></compose>
+      </div>
+      
+    </div>
+   
+  </div>-->
+  
+  <!-- <div class="info-banner" ref="infoBannerDiv" show.bind="infoBannerActive">
+    <i class="fa fa-trophy"></i> ${message} <i class="fa fa-trophy"></i>
+    <span class="fa fa-close info-close" click.trigger="closeBanner()"></span>
+  </div>   -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">      
+        
+        <div class="centerBlock">
+          <router-view></router-view>          
+        </div>                
+      </div>      
+    </div>
+  </div>
+
+  
+  
+  <footer class="panel-footer-ex">
+    <p class="footer-content">&copy; ${year} ${appName} Contact Support: <a href="mailto:${appSupportEmail}">${appSupportEmail}</a></p>
+  </footer>
+  <!-- set background color here otherwise if you do it at top of page aurelia loads it before the splash has finished and it makes the transparent logo look werid -->
+  <style>    
+    body {
+      background-color: lightgray;      
+    }
+  </style>
+</template>

@@ -1,0 +1,93 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const DataContainer_1 = require("./../../../poker.ui/src/shared/DataContainer");
+const tournament_1 = require("../../src/model/tournament");
+const test_helpers_1 = require("../test-helpers");
+const IBroadcastService_1 = require("../../src/services/IBroadcastService");
+const ClientMessage_1 = require("../../../poker.ui/src/shared/ClientMessage");
+const mockWebSocket_1 = require("../mockWebSocket");
+const WebSocketHandle_1 = require("../../src/model/WebSocketHandle");
+const TournamentRegisterRequestHandler_1 = require("../../src/handlers/TournamentRegisterRequestHandler");
+const TournamentRegistration_1 = require("../../src/model/TournamentRegistration");
+const User_1 = require("../../src/model/User");
+const TournamentLogic_1 = require("../../src/handlers/TournamentLogic");
+var assert = require('assert');
+const substitute = require("jssubstitute");
+const TournmanetStatus_1 = require("../../../poker.ui/src/shared/TournmanetStatus");
+describe('TournamentSubscriptionRequestHandler', () => {
+    let handler;
+    let handle;
+    let socket;
+    let dataRepository;
+    let broadcastService;
+    let tournamentLogic;
+    let tournamentRegistrations = [];
+    let tournament;
+    beforeEach(function () {
+        socket = new mockWebSocket_1.MockWebSocket();
+        handle = new WebSocketHandle_1.WebSocketHandle(socket);
+        handle.user = new User_1.User();
+        handle.user.guid = 'guid1';
+        handle.user.activated = true;
+        tournament = new tournament_1.Tournament();
+        tournament._id = "tournmanetId";
+        substitute.throwErrors();
+        dataRepository = test_helpers_1.TestHelpers.getDataRepository();
+        dataRepository.getTournmanetById = (id) => { return id == 'id1' ? Promise.resolve(tournament) : null; };
+        dataRepository.getTournamentRegistrations = (args) => { return Promise.resolve(tournamentRegistrations); };
+        dataRepository.getUser = () => Promise.resolve(handle.user);
+        broadcastService = test_helpers_1.TestHelpers.getSubstitute(IBroadcastService_1.IBroadcastService);
+        tournamentLogic = substitute.for(new TournamentLogic_1.TournamentLogic(null, null, null, null, null, null));
+        handler = new TournamentRegisterRequestHandler_1.TournamentRegisterRequestHandler(dataRepository, broadcastService, tournamentLogic);
+    });
+    it('should_register_for_tournament', async () => {
+        dataRepository.getTournamentPlayerCount = (tournamentId) => { return Promise.resolve(5); };
+        let message = new ClientMessage_1.ClientMessage();
+        message.tournamentRegisterRequest = new ClientMessage_1.TournamentRegisterRequest('id1');
+        handle.user.activated = true;
+        await handler.run(handle, message);
+        dataRepository.receivedWith('saveTournamentRegistration', substitute.arg.matchUsing((arg) => { return arg instanceof TournamentRegistration_1.TournamentRegistration && arg.tournamentId === 'id1' && arg.userGuid === 'guid1'; }));
+        broadcastService.receivedWith('broadcast', substitute.arg.matchUsing((arg) => { return arg instanceof DataContainer_1.DataContainer && arg.tournamentSubscriptionResult.tournaments.length === 1 && arg.tournamentSubscriptionResult.tournaments[0].id == 'id1' && arg.tournamentSubscriptionResult.tournaments[0].playerCount === 5; }));
+        let lastMessage = socket.dequeue();
+        assert.equal(1, lastMessage.tournamentSubscriptionResult.tournaments.length);
+        assert.equal('id1', lastMessage.tournamentSubscriptionResult.tournaments[0].id);
+        assert.equal(true, lastMessage.tournamentSubscriptionResult.tournaments[0].joined);
+    });
+    it('cannot_register_as_user_is_not_registered', async () => {
+        dataRepository.getUser = () => Promise.resolve(null);
+        let message = new ClientMessage_1.ClientMessage();
+        message.tournamentRegisterRequest = new ClientMessage_1.TournamentRegisterRequest('id1');
+        await handler.run(handle, message);
+        let lastMessage = socket.getLastMessage();
+        assert.equal('You must register to play tournaments', lastMessage.error.message);
+        dataRepository.didNotReceive('saveTournamentRegistration');
+    });
+    it('tournament_does_not_exist', async () => {
+        let message = new ClientMessage_1.ClientMessage();
+        message.tournamentRegisterRequest = new ClientMessage_1.TournamentRegisterRequest('foo');
+        await handler.run(handle, message);
+        dataRepository.didNotReceive('saveTournamentRegistration');
+        let lastMessage = socket.getLastMessage();
+        assert.equal('Tournament not found: foo', lastMessage.error.message);
+    });
+    it('You are already registered for this tournament', async () => {
+        let message = new ClientMessage_1.ClientMessage();
+        message.tournamentRegisterRequest = new ClientMessage_1.TournamentRegisterRequest('id1');
+        handle.user.activated = true;
+        tournamentRegistrations.push({});
+        await handler.run(handle, message);
+        dataRepository.didNotReceive('saveTournamentRegistration');
+        let lastMessage = socket.getLastMessage();
+        assert.equal('You are already registered for this tournament', lastMessage.error.message);
+    });
+    it('You can no longer register for this tournament', async () => {
+        let message = new ClientMessage_1.ClientMessage();
+        message.tournamentRegisterRequest = new ClientMessage_1.TournamentRegisterRequest('id1');
+        tournament.status = TournmanetStatus_1.TournmanetStatus.Started;
+        await handler.run(handle, message);
+        dataRepository.didNotReceive('saveTournamentRegistration');
+        let lastMessage = socket.getLastMessage();
+        assert.equal('You can no longer register for this tournament', lastMessage.error.message);
+    });
+});
+//# sourceMappingURL=TournamentRegisterRequestHandlerFixture.js.map

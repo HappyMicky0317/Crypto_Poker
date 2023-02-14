@@ -1,0 +1,55 @@
+<nb-card>
+  <nb-card-header>
+
+  </nb-card-header>
+  <nb-card-body>
+      <div class="row" *ngIf="errorMessage">
+          <div class="col-xs-12 col-md-6">
+            <div class="alert alert-danger">{{errorMessage}}</div>
+          </div>  
+        </div>
+    <span *ngIf="loading; else mainContent">Loading...<i class="fa fa-spin fa-sync"></i></span>  
+    <ng-template #mainContent>      
+      <div class="row">
+          <div class="col-sm-2 form-group">
+              <label for="">Currency</label>
+              <select type="text" class="form-control uppercase" [(ngModel)]="currency" (change)="onCurrencyChanged()"> 
+              <option [value]="currency" *ngFor="let currency of currencies">{{currency}}</option>
+              </select>
+            </div>
+            <div class="col-sm-8 form-group">
+              <label for="">BIP32 Extended Public Key</label>
+              <input type="text" class="form-control" [placeholder]="xpub" disabled/>                         
+            </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2 form-group">
+           <button class="btn btn-primary btn-tn" (click)="refresh()">Refresh</button>
+          </div>         
+    </div>
+      <table class="table table-striped table-bordered table-hover table-condensed">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Address</th>              
+            </tr>
+          </thead>
+          <tbody style="cursor:pointer;">
+           <tr *ngFor="let address of depositAddresses; let i=index">
+              <td><span>{{i}}</span></td>
+              <td><span>{{address.screenName}}</span></td>              
+              <td><span>{{address.address}}</span></td>
+              <!-- <td><span>{{tournament.startTime | date:'dd MMM - h:mm a'}}</span></td> -->
+            </tr>
+          </tbody>
+        </table>
+        <p *ngIf="depositAddresses.length==0">No addresses</p>
+
+
+    </ng-template>
+    
+    
+
+  </nb-card-body>
+</nb-card>

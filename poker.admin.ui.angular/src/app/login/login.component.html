@@ -1,0 +1,24 @@
+
+
+    <div class="container" id="login">
+      <div class="row justify-content-center">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <div class="login">
+
+            <h1>Login</h1>
+                    <h5 [ngStyle]="{'display' : status, 'color' : 'red'}">Details are not correct!</h5>
+    
+                    <div class="form-group">
+                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" [(ngModel)]="email"/>
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"  [(ngModel)]="password" />
+                    </div>
+                    <div class="form-group">
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-lg btn-block btn-success" (click)="submit()">Sign in</button>
+          </div>
+        </div>
+      </div>
+    </div>

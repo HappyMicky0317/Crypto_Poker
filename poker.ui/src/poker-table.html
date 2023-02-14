@@ -1,0 +1,141 @@
+<template>
+  <require from="./next-tournament"></require>
+<!-- <div id="leaderboard-lhs">
+  
+</div> -->
+
+
+  <div id="poker-room">
+    <div show.bind="tableName" class="current-table-name">
+      <span>${isTournament ? 'Tournament' : 'Table'}</span>: <span>${tableName} </span>
+      <span show.bind="isTournament"><a href="#" class="nounderline" click.trigger="openInfo(tournament)">
+          <span class="fa-stack">
+              <i class="fa fa-circle fa-stack-2x" style="color:black"></i>
+              <i class="fa fa-info fa-stack-1x" style="color:white"></i> 
+             </span>  
+      </a></span>
+      <div show.bind="isTournament">
+        <div>
+        Blinds: ${util.currentTableConfig.smallBlind} / ${util.currentTableConfig.bigBlind}
+      </div>
+      <div show.bind="nextBlinds" class="nextBlinds">
+        <span>Increase: 
+          <span show.bind="nextBlinds.timeUntil > 0">${nextBlinds.smallBlind}/ ${nextBlinds.bigBlind} in ${nextBlinds.timeUntil} ${nextBlinds.timeUntilUnit}  </span>
+          <span show.bind="nextBlinds.timeUntil <= 0">Next Hand</span>
+      </span>
+
+      </div>
+    </div>
+    </div>
+    <div class="pingTime"><i class="fa fa-circle ${isConnected ? 'connected-icon' : 'disconnected-icon'}"> </i><span show.bind="pingTime"> ${pingTime} ms</span><span show.bind="!pingTime"> Disconnected</span></div>    
+    <div id="loadingTable" show.bind="isLoadingTable">Loading table<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></div>
+
+    <div id="newGameStartingIn" show.bind="gameStarting.isStarting">New hand starting... 
+      <span>${startingIn}</span>
+    <div show.bind="gameStarting.blindsChanging">Blinds are now ${gameStarting.blindsChanging.smallBlind} and ${gameStarting.blindsChanging.bigBlind}</div>
+    </div>
+    <div class="cashOut" click.delegate="cashOut()">Cashier</div>
+    <require from="./lib/number-format"></require>
+    <require from="./lib/crypto-format"></require>
+
+    <template repeat.for="seat of seats">
+      <compose view="seat.html" view-model.bind="seat" containerless />
+    </template>
+  
+    
+    <compose view-model="betting-controls" view.bind="betting-controls.html" view-model.ref="bettingControls" containerless></compose>
+    
+    <div id="leaveTable" class="btn btn-primary btn-xs" click.delegate="leaveTable()" show.bind="playerSitting && !isTournament">Leave Table</div>
+    
+    <div id="pot-amount" show.bind="potAmount">Pot: <span>${potAmount | numberFormat}</span></div>
+    <div id="table-pot-amount" show.bind="potAmount && game.board.length>0"><span>${potAmount | numberFormat}</span></div>
+    <div id="infobox">
+      <div id="gameinfo">
+        <span class="table_title">${playerSitting ? 'Stack:' : 'Account Balance:'}  ${playerStack | numberFormat}</span>
+        <span class="crypto-balance" if.bind="isCurrencyCrypto">${playerStack | cryptoFormat}</span>
+        <span class="currency-icon currency-${currency}" if.bind="isCurrencyCrypto"></span>
+
+        <!--<span id="tocall" show.bind="game.tocall >= 0">To call: ${game.tocall | numberFormat}</span>-->
+      </div>
+      <div id="chatbox" ref="chatboxElem" scrolltop.bind="chatboxElemScrollHeight">
+        <p repeat.for="chat of chatMessages" class="chatRow">
+          <span class="${chat.screenName==='Dealer' ? 'chatDealer': 'chatScreenName'}">${chat.screenName}:</span>
+          <span show.bind="chat.message" class="chatMessage">${chat.message}</span>
+          <span show.bind="chat.potResultChatSummaries.length">
+            <span repeat.for="summary of chat.potResultChatSummaries">
+              <span>${summary.text}</span>
+
+              <span show.bind="summary.cards.length">            
+                  <br/><span repeat.for="card of summary.cards" style="background-color: white;border-radius: 2px;padding:0 2px; margin: 0 2px;" class="${card.suit==='♠'||card.suit==='♣' ? 'blackCard': 'redCard'}">${card.value}${card.suit}</span>                  
+                </span>
+
+            </span>
+
+          </span>
+          
+        </p>        
+      </div>
+      <i class="fa ${playChatSound ? 'fa-volume-up' : 'fa-volume-off'}" id="poker-room-chat-volume" aria-hidden="true" click.delegate="playChatSound=!playChatSound"></i>
+      <div id="chat-input">
+        <input type="text" keyup.trigger="chatKeyPress($event)" placeholder="enter chat message" value.bind="chatInput">
+        <div id="submitchat" click.trigger="sendChat()">Send</div>   
+        
+      </div>
+    </div>
+    <div id="side-pots" class="hide">
+      <strong>Side Pots:</strong>
+      <ol></ol>
+    </div>
+    
+    <div class="dealerbutton" id="seat0button" show.bind="game.dealer===0">D</div>
+    <div class="dealerbutton" id="seat1button" show.bind="game.dealer===1">D</div>
+    <div class="dealerbutton" id="seat2button" show.bind="game.dealer===2">D</div>
+    <div class="dealerbutton" id="seat3button" show.bind="game.dealer===3">D</div>
+    <div class="dealerbutton" id="seat4button" show.bind="game.dealer===4">D</div>
+    <div class="dealerbutton" id="seat5button" show.bind="game.dealer===5">D</div>
+    <div class="dealerbutton" id="seat6button" show.bind="game.dealer===6">D</div>
+    <div class="dealerbutton" id="seat7button" show.bind="game.dealer===7">D</div>
+    <div class="dealerbutton" id="seat8button" show.bind="game.dealer===8">D</div>
+
+    <div class="boardcard" id="card-0"><div class="sprite sprite-${game.board[0]}-150" if.bind="game.board.length>0"></div></div>
+    <div class="boardcard" id="card-1"><div class="sprite sprite-${game.board[1]}-150" if.bind="game.board.length>0"></div></div>
+    <div class="boardcard" id="card-2"><div class="sprite sprite-${game.board[2]}-150" if.bind="game.board.length>0"></div></div>
+    <div class="boardcard" id="card-3"><div class="sprite sprite-${game.board[3]}-150" if.bind="game.board.length>3"></div></div>
+    <div class="boardcard" id="card-4"><div class="sprite sprite-${game.board[4]}-150" if.bind="game.board.length>4"></div></div>
+
+      
+    <div id="join-label" show.bind="!isLoadingTable && statusLabel" >
+      <div innerhtml.bind="statusLabel"></div>
+      <button class="btn btn-primary margin-top-10" click.delegate="imbackClicked(false)" disabled.bind="sendingSittingBackIn" show.bind="playerSitting && seat.isSittingOut">I'm back <i show.bind="sendingSittingBackIn" class="fa fa-spinner fa-spin"></i></button>
+    </div>
+    
+    <div id="auto-controls">
+      <div class="checkbox" id="fold-any-bet" show.bind="showAutoFold">
+        <label><input type="checkbox" value="" checked.bind="tableOptions.autoFold" change.delegate="autoFoldClicked()">${autoFoldButtonText}</label>
+      </div>
+      <div class="checkbox" id="auto-check-conatiner" show.bind="showAutoCheck">
+        <label><input type="checkbox" value="" checked.bind="tableOptions.autoCheck" change.delegate="autoCheckClicked()">Check</label>
+      </div>
+    </div>
+    
+    <div class="checkbox" id="sitOutNextHandContainer" show.bind="playerSitting">
+      
+      <label><input type="checkbox" value="1" name="" checked.bind="tableOptions.sitOutNextHand" change.delegate="sitOutNextHandClicked()">Sit out next hand</label>
+    </div>
+  <div repeat.for="chip of potChips" class="${chip.classes}" css="top: ${chip.top}px; left: ${chip.left}px;"></div>
+    <compose view="./dealer-tray.html"></compose>
+  </div> <!-- /poker-room -->
+  
+  <div class="poker-tables-container">
+      <next-tournament></next-tournament>
+    <!-- <compose view-model="global-chat" view.bind="global-chat.html" containerless></compose>       -->
+    <div id="leaderboard-rhs">
+        <!-- <compose view-model="leaderboard" view.bind="leaderboard.html" containerless></compose>     -->
+        
+  <compose view-model="poker-rooms" view.bind="poker-rooms.html" containerless></compose>        
+
+      </div>
+      
+  </div>
+  
+</template>

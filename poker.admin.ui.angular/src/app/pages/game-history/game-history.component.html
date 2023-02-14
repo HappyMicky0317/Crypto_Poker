@@ -1,0 +1,106 @@
+<nb-card>
+  <nb-card-header>Game History</nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-lg-2">
+        <div class="form-group">
+          <label class="control-label">Tournament</label>
+          <select [(ngModel)]="tournamentId" class="form-control input-sm" (change)="tournamentChanged()">
+            <option value="">Choose...</option>
+            <option *ngFor="let tournament of tournaments" [ngValue]="tournament._id">
+              {{tournament.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="form-group">
+          <label class="control-label">Table</label>
+          <select [(ngModel)]="tableId" class="form-control input-sm" (change)="tableIdChanged()" [disabled]="loadingTables">
+            <option value="">Choose...</option>
+            <option *ngFor="let table of tables" [ngValue]="table._id">
+              {{table.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="form-group">
+          <label class="control-label">User</label>
+          <input type="text" [(ngModel)]="userGuid" class="form-control input-sm" placeholder="enter user guid"
+            (keyup)="userGuidKeyup($event)" />
+          <p *ngIf="screenNames">Screen Names: {{screenNames}}</p>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="form-group">
+          <button class="btn btn-primary btn-tn" (click)="loadGames()">Search</button>
+        </div>
+      </div>
+    </div>
+
+
+    <p *ngIf="loading">Loading...<i class="fa fa-spin fa-sync"></i></p>
+    <table class="table table-striped table-bordered table-hover table-condensed">
+      <thead>
+        <tr>
+
+          <th>Table Name</th>
+          <th>Players</th>
+          <th>Board</th>
+          <th>Winner(s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let game of games">
+          <td>{{game.tableName}}<br />{{game._id | mongoIdToDate}}</td>
+          <td>
+            <div *ngFor="let player of game.players" style="border-bottom: 1px ridge darkgray; margin-bottom: 5px;">
+
+              <div style="display: inline; vertical-align: top;">Seat {{player.seat+1}} : {{player.screenName}}
+                {{player.hasFolded ? '(Folded)' : ''}} <br />Stack: {{player.stack | numberFormat:game.currency}}
+                <!--<br/>-->
+                <p>
+                  P&amp;L:<span title="{{player.profitLoss}}" [style.color]="player.profitLoss > 0 ? 'green':'red'">
+                    ${{player.profitLossUsd}} </span> <span> (Rake: {{player.rake}})</span>
+                </p>
+
+              </div>
+
+
+              <span *ngFor="let card of player.holecards" class="sprite sprite-{{card}}-150" style="width: 50px; height: 70px; display: inline-block;"></span>
+            </div>
+          </td>
+          <td>
+            <span *ngFor="let card of game.boardCards" class="sprite sprite-{{card}}-150" style="width: 50px; height: 70px; display: inline-block;"></span>
+          </td>
+          <td>
+            <div *ngFor="let potResult of game.potResults; let i = index">
+              <p>Pot {{i+1}}</p>
+              <ul>
+                <li *ngFor="let allocation of potResult.allocations">
+                  <span>{{getPlayer(game, allocation.player.guid)}} : </span>
+                  <span> Amount: {{allocation.amount | numberFormat }} <span class="badge">${{allocation.amountUsd}}</span></span>
+                  <div>
+                    <span>{{getWinningHand(potResult, allocation.player.guid).handRankEnglish}} : </span>
+                    <span>{{getWinningHand(potResult, allocation.player.guid).bestHand}}</span>
+                  </div>
+
+                </li>
+              </ul>
+            </div>
+
+            <p *ngIf="game.currency != 'usd' && game.currency != 'tournament'">Exchange Rate: ${{game.exchangeRate}} USD</p>
+            <p>Blinds: {{game.smallBlind| numberFormat:game.currency}} / {{game.bigBlind| numberFormat:game.currency}}</p>
+            <p>Audit:</p>
+            <div *ngFor="let audit of game.auditEvents" style="font-size: 10px;">
+              <span>{{getPlayer(game, audit.userGuid)}} : </span>
+              <span>{{audit.action}} </span>
+              <span *ngIf="audit.betAmount"> {{audit.betAmount}}</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>

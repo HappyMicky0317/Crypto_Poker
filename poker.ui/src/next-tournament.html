@@ -1,0 +1,36 @@
+<template>
+  <div show.bind="tournament" style="margin:15px 0; border: 1px solid gray; padding: 5px;text-align: center;">
+      <p>          
+          <span>
+            <a href="#" class="nounderline" click.trigger="openInfo()"><i class="fa fa-info-circle tournament-info"></i>  </a> ${tournament.name} 
+            <span> - <span>${tournament.totalPrize}</span> 
+            <span class="table-currency">${tournament.currency}</span> 
+            <i class="currency-icon currency-${tournament.currency}"></i></span>
+          </span> 
+          <div>
+            <span show.bind="!starting && !started"><span class="tournament-starting-in">${startingIn}</span></span>
+            <span show.bind="starting">Starting <i class="fa fa-spinner fa-spin"></i></span> 
+            <span show.bind="started">Started! </span> 
+          </div>
+          
+        </p>
+
+
+        <a class="label label-default tournament-action-button poker-rooms-joined-label" show.bind="!starting && tournament.joined && !tournament.status"><i class="fa fa-check"></i> Registered </a>
+
+        <p style="margin: 20px 0;" show.bind="tournament.canRegister">
+            <a class="label label-default next-tournament-register-button" click.trigger="registerForTournament()"
+            disabled.bind="tournament.registering">
+            <i class="fa ${tournament.registering ? 'fa-spinner fa-spin': 'fa-plus'}"></i> 
+            <span show.bind="tournament.registering">Registering</span>
+            <span show.bind="!tournament.registering">Register Now
+                <span show.bind="tournament.isLate" style="font-size:0.25em;"> Closing Soon!</span>
+            </span>
+            
+            
+          </a>
+        </p>
+
+  </div>
+
+</template>

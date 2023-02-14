@@ -1,0 +1,61 @@
+<template>
+  <require from="./lib/crypto-format"></require>
+  <require from="./lib/capitalize-first"></require>
+  <require from="./lib/local-date"></require>
+  <require from="./lib/payment-type-abbrev"></require>
+
+  <div class="form-group" show.bind="loading">
+    <span>Loading payments please wait...</span>
+    <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+  </div>
+  <div show.bind="payments && !payments.length">You do not have any payment history</div>
+  <div show.bind="payments.length">
+    <div repeat.for="payment of payments">
+
+    </div>
+    <div style="max-height: 400px; overflow:auto">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>          
+                <th>Amount</th>
+                <th>Status/Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr repeat.for="payment of payments">          
+                <td>${payment.timestamp | localDate }</td>
+                <td>
+                  <span css="color: ${payment.type === 'incoming' ? 'green' : 'red'};">${payment.type | paymentTypeAbbrev}
+                      <i class="fa ${payment.type === 'incoming' ? 'fa-arrow-left' : 'fa-arrow-right'}"></i>
+                  </span>
+                  
+                </td>          
+                <td>
+                  <span>${payment.amount | cryptoFormat:payment.currency}</span>
+                  <span class="uppercase">${payment.currency}</span> <span class="currency-icon currency-${payment.currency}"></span>
+                </td>
+                <td>
+                    
+                  <span>
+                    <a show.bind="payment.txHash" href.bind="payment.txHashLink" target="_blank">${payment.status | capitalizeFirst}</a>
+                    <span show.bind="!payment.txHash">${payment.status | capitalizeFirst}</span>
+                  </span>
+                <span show.bind="payment.status === 'pending' && payment.type === 'incoming'" title="${payment.confirmations} of ${payment.requiredConfirmations} confirmations">
+                <i class="fa fa-info-circle" style="margin-left: 8px;"></i>  
+                </span>
+
+                <span show.bind="payment.status === 'pending' && payment.type === 'outgoing'" title="Withdrawl accepted awaiting processing">
+                    <i class="fa fa-info-circle" style="margin-left: 8px;"></i>  
+                    </span>
+                <div show.bind="payment.comment" style="font-size:0.8em; font-style:italic;">${payment.comment}</div>
+                
+              </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+  
+</template>

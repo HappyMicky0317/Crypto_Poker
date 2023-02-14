@@ -1,0 +1,15 @@
+<template>
+  <ux-dialog>    
+    <ux-dialog-body>
+      <h3>Warning! <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></h3>
+      
+      <p class="alert alert-danger">
+        ${message}
+      </p>
+      
+    </ux-dialog-body>
+    <ux-dialog-footer>
+      <button click.trigger="controller.ok()">Ok</button>
+    </ux-dialog-footer>
+  </ux-dialog>
+</template>

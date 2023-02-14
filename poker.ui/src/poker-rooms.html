@@ -1,0 +1,118 @@
+<template>
+  <require from="./lib/number-format"></require>
+  <require from="./lib/TournamentFilterValueConverter"></require>
+  <div style="margin-top: 10px;">
+    <!-- <button class="btn btn-xs btn-primary" click.delegate="cashGamesVisible=true">Cash Games</button>
+    <button class="btn btn-xs btn-primary" click.delegate="cashGamesVisible=false">Tournaments</button> -->
+    <h4 class="table_title">Cash Games</h4>
+    <table class="poker-tables margin-top-5">
+      <thead>
+        <tr>
+          <th>Table Name</th>
+          <th>Blinds</th>
+          <th>Currency</th>
+          <th>Players</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="table of tableConfigs | tournamentFilter:null" class="${table._id===util.currentTableId ? 'poker-rooms-current-table' : ''}"
+            model.bind="table.id" data-id="${table._id}" click.trigger="openTable(table._id)">
+          <td><span class="label label-default poker-rooms-joined-label" if.bind="table._id===util.currentTableId"><i class="fa fa-check" aria-hidden="true"></i> Joined </span> ${table.name}</td>
+          <td>${table.smallBlindUsd | numberFormat:'usd'} / ${table.bigBlindUsd | numberFormat:'usd'}</td>
+          <td>
+            <span class="table-currency">${table.currency}</span>
+            <i class="currency-icon currency-${table.currency}"></i>
+            
+          </td>
+          <td>${table.numPlayers}/${table.maxPlayers}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4 class="table_title" style="margin-top:50px;">Tournaments</h4>
+    <div>
+      <!-- <p style="text-align: center; margin-top: 10px;">Click a tournament to Join</p> -->
+      <table class="poker-tables margin-top-5" >
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Currency</th>
+            <th>Start Time</th>
+            <th>Total Prize</th>
+            <th>Players</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr repeat.for="tournament of tournaments" style="cursor:default;">
+            <td>
+                <a class="label label-default tournament-action-button poker-rooms-joined-label" show.bind="tournament.joined && !tournament.status"><i class="fa fa-check"></i> Registered </a>
+                <a class="label label-default tournament-action-button" show.bind="tournament.canRegister" 
+                click.trigger="registerForTournament(tournament)" disabled.bind="tournament.registering">
+                  <i class="fa ${tournament.registering ? 'fa-spinner fa-spin': 'fa-plus'}"></i> ${tournament.registering ? 'Registering': 'Register Now'} 
+                  <span> ${tournament.isLate ? '(Closing Soon!)': ''}</span>
+                </a>
+                <a class="label label-default tournament-action-button" show.bind="tournament.joined && tournament.status==1"  disabled><i class="fa fa-trophy"></i> Playing </a>
+                <a href="#" class="nounderline" click.trigger="openInfo(tournament)"><i class="fa fa-info-circle tournament-info"></i>  </a>
+                
+                
+              <span>${tournament.name}</span>
+
+              <a class="pull-right nounderline" show.bind="tournament.status==1" click.trigger="tournament.showTables = !tournament.showTables"><i class="fa ${tournament.showTables ? 'fa-angle-double-up':'fa-angle-double-down'}"></i> Show Tables </a>
+
+              <div show.bind="tournament.showTables">
+                
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Table</th>
+                      <th>Blinds</th>
+                      <th>Players</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr repeat.for="table of tableConfigs | tournamentFilter:tournament.id" class="${table._id===util.currentTableId ? 'poker-rooms-current-table' : ''}"
+                      model.bind="table.id" data-id="${table._id}" click.trigger="openTable(table._id)">
+                      <td>
+                        <span><span class="label label-default poker-rooms-joined-label" if.bind="table._id===util.currentTableId"><i class="fa fa-check"
+                          aria-hidden="true"></i> Joined </span> ${table.name}</span>
+                      </td>
+                      <td>
+                        <span>${table.smallBlind | numberFormat:table} / ${table.bigBlind | numberFormat:table}</span>
+                        
+                      </td>
+                    <td>
+                      <span>${table.numPlayers}/${table.maxPlayers}</span>
+                    </td>
+                      
+                    
+                      
+                      </tr>
+                  </tbody>
+                </table>
+                
+              </div>
+
+              
+
+            </td>
+            <td><span class="table-currency">${tournament.currency}</span>
+              <i class="currency-icon currency-${tournament.currency}">
+            </td>
+            <td><span>${tournament.statusText}</span></td>
+            <td>
+              <span>${tournament.totalPrize}</span> 
+              <span class="table-currency">${tournament.currency}</span> 
+              <i class="currency-icon currency-${tournament.currency}"></i>
+              <!-- <span>(${tournament.totalPrizeUsd})</span> -->
+            </td>
+            <td>
+              ${tournament.playerCount}              
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.8em; font-style:italic;margin-top:5px;">Showing ${tournaments.length} of ${tournamentCount} Tournaments</p>
+    </div>
+  </div>
+
+</template>

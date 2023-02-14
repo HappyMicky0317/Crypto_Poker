@@ -1,0 +1,100 @@
+<nb-card>
+  <nb-card-header>
+
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row" *ngIf="errorMessage">
+      <div class="col-xs-12 col-md-6">
+        <div class="alert alert-danger">{{errorMessage}}</div>
+      </div>
+    </div>
+    <span *ngIf="loading; else mainContent">Loading...<i class="fa fa-spin fa-sync"></i></span>
+    <ng-template #mainContent>
+
+
+      <div class="row">
+          <div class="col-sm-2 form-group">
+              <label for="">Currency</label>
+              <select type="text" class="form-control uppercase" [(ngModel)]="currency" (change)="fetch()">
+                <option [value]="currency" *ngFor="let currency of currencies">{{currency}}</option>
+              </select>
+            </div>
+            <div class="col-sm-2 form-group">
+                <label for="">Payment Type</label>
+                <select type="text" class="form-control uppercase" [(ngModel)]="paymentType" (change)="fetch()">
+                  <option [value]="paymentType" *ngFor="let paymentType of paymentTypes">{{paymentType}}</option>
+                </select>
+              </div>
+              <div class="col-sm-2 form-group">
+                <label for="">User</label>
+                <input type="text" class="form-control" [(ngModel)]="screenName" (change)="fetch()"/>                  
+              </div>
+              <div class="col-sm-2 form-group">
+                <label for="">Show</label>
+                <select type="text" class="form-control uppercase" [(ngModel)]="showOption">
+                  <option [value]="show" *ngFor="let show of showOptions">{{show}}</option>
+                </select>           
+              </div>
+              <div class="col-sm-2 form-group">
+                  <button class="btn btn-primary btn-tn" (click)="fetch()">Refresh</button>
+                </div>
+      </div>
+
+
+      <table class="table table-striped table-bordered table-hover table-condensed" style="font-size: 0.8em">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>User</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Currency</th>
+            <th>Status</th>
+            <th>Address/Tournament</th>
+            
+            
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of payments">
+            <td>{{payment.timestamp| date:'dd MMM yy - h:mm a'}}</td>
+            <td>
+                <span title="{{payment.guid}}">{{payment.screenName}}</span>
+                <p *ngIf="payment.transferTo!=null"> Transfer To: {{payment.transferTo.screenName}}</p>
+                <p *ngIf="payment.transferFrom!=null"> Transfer From: {{payment.transferFrom.screenName}}</p>
+              </td>
+            <td>{{payment.type}}</td>
+            <td>{{payment.amount | cryptoFormat}}</td>
+            <td><span class="uppercase">{{payment.currency}}</span></td>
+            <td><span>{{payment.status}} </span>
+              <span *ngIf="payment.txHashLink"><a [href]="payment.txHashLink" target="_blank">[Tx]</a></span>
+            </td>
+            <td>{{payment.address}} {{payment.tournamentName}} {{payment.comment}}
+            </td>
+            
+            
+            
+            <td>
+                <div *ngIf="payment.canApprove">
+                  <button class="btn btn-primary btn-tn" (click)="approve(payment)" [disabled]="saving">Approve <i class="fa fa-spinner fa-spin" *ngIf="approving"></i></button> 
+                  <button class="btn btn-danger btn-tn margin-left-5" (click)="cancel(payment)" [disabled]="saving">Cancel <i class="fa fa-spinner fa-spin" *ngIf="cancelling"></i></button>                   
+                </div>
+                <div class="alert alert-danger" *ngIf="payment.error">
+                  <strong>Withdrawl Failed!</strong>
+                  <p>{{payment.error}}</p>
+                </div>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+
+
+    </ng-template>
+
+
+
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,1 @@
+{"version":3,"file":"IEmailSender.js","sourceRoot":"","sources":["../../../../src/email/IEmailSender.ts"],"names":[],"mappings":";;;AAAA,MAAa,YAAY;IACrB,SAAS,CAAC,EAAS,EAAE,OAAc,EAAE,IAAW,EAAE,IAAY,EAAE,SAAiB,EAAE,IAAc;QAC7F,MAAM,IAAI,KAAK,CAAC,iBAAiB,CAAC,CAAC;IACvC,CAAC;CACJ;AAJD,oCAIC"}

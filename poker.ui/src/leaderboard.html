@@ -1,0 +1,72 @@
+<template>
+  <require from="./lib/number-format"></require>
+  <require from="./lib/crypto-format"></require>
+  <div id="leaderboard-container">
+
+
+    
+      <div show.bind="rates.length">
+          
+          <div style="margin-top: 10px;">
+            <table class="leaderboard">
+              <thead>
+                <tr>
+                  <th>Currency</th>          
+                  <th>Rate</th>          
+                  <th>Change (24 hr)</th>
+                  <th>Volume (24 hr)</th> 
+                </tr>
+              </thead>
+              <tbody>
+                <tr repeat.for="rate of rates">
+                    <td><span class="table-currency">${rate.currency}</span> <i class="currency-icon currency-${rate.currency}"></i></td>              
+                  <td>${rate.price}</td>
+                  <td>
+                    <span show.bind="rate.percentChange" class="${rate.percentChange >= 0 ? 'leaderboard-profit-positive':'leaderboard-profit-negative'} ${rate.changed ? 'flash': ''}">
+                      ${rate.percentChange.toFixed(2)}<span show.bind="rate.percentChange!=null">%</span>
+                      <i class="fa fa-arrow-down leaderboard-profit-negative" show.bind="rate.percentChange < 0" ></i>
+                      <i class="fa fa-arrow-up leaderboard-profit-positive" show.bind="rate.percentChange > 0"></i>
+                    </span> 
+                    <span show.bind="!rate.percentChange">-</span>
+                  </td>                                    
+                    <td><span show.bind="rate.volume!=0"> ${rate.volume} </span> <span show.bind="rate.volume==0">-</span>  </td>                      
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+  
+      <div show.bind="results.length">
+          <h4 style="margin-top: 20px;">Leaderboard</h4>
+          <div style="margin-top: 10px;">
+            <table class="table table-striped table-bordered table-hover table-condensed leaderboard">
+              <thead>
+                <tr>
+                  <th>User</th>          
+                  <th>Currency</th>          
+                  <th>Profit/Loss</th>
+                  <th>Hands Played</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr repeat.for="result of results">
+                  <td>${result.screenName}</td>
+                  <td><span class="table-currency">${result.currency}</span> <i class="currency-icon currency-${result.currency}"></i></td>
+                  <td class="${result.profitLoss > 0 ? 'leaderboard-profit-positive':'leaderboard-profit-negative'} ${result.changed ? 'flash': ''}">
+                    <span>${result.profitLoss | cryptoFormat:result.currency}</span>
+                    <i class="fa fa-arrow-down leaderboard-profit-negative" show.bind="result.movement < 0" ></i>
+                    <i class="fa fa-arrow-up leaderboard-profit-positive" show.bind="result.movement > 0"></i>
+                  </td>
+                  <td class="${result.changed ? 'flash': ''}" >${result.handsPlayed}</td>    
+    
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+
+      
+  </div>
+  
+
+</template>

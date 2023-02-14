@@ -1,0 +1,44 @@
+<template>
+  <require from="./lib/number-format"></require>
+  <style if.bind="!empty && avatar">
+    .player-sitting-inner-${seatIndex}:before {
+      background: url(${avatar}) rgb(97, 111, 145) no-repeat;
+      background-size: cover;
+    }
+  </style>
+  
+
+  <div mouseover.delegate="isHovering=true" mouseout.delegate="isHovering=false" id="seat-${seatIndex}" click.trigger="sit()" class="player-info ${empty ? 'empty-seat' : 'player-sitting'} ${canSit ? 'can-sit' : ''} ${playerMyTurn ? 'player-my-turn' : ''}" ref="seatElem" >  
+  <div class="timer" show.bind="myturn && timeLeft">${timeLeft}</div>
+    <div class="${empty ? '' : 'player-sitting-inner'} ${isSittingOut || hasFolded ? 'player-sitting-inner-grayscale' : ''} player-sitting-inner-${seatIndex}">
+      <div class="action ${isSittingOut || hasFolded ? 'grayscale' : ''}" id="seat${seatIndex}action" show.bind="action">${action}</div>
+      <div class="facedown down0">
+        <div class="sprite sprite-Red_Back-150" if.bind="playing && !hasFolded && !guid && !faceupCard1"></div>
+      </div>
+      <div class="facedown down1">
+        <div class="sprite sprite-Red_Back-150" if.bind="playing && !hasFolded && !guid && !faceupCard2"></div>
+      </div>
+      <div class="player-seat-info-box player-status ${isSittingOut || hasFolded ? 'grayscale' : ''}" show.bind="!empty && !ownCardsVisible">
+        <span class="player-name">${name}</span><br><span class="player-amount">${stack | numberFormat}</span>
+      </div>
+      <div class="player-seat-info-box player-own-stack" show.bind="!empty && ownCardsVisible">
+        <span class="player-amount">${stack | numberFormat}</span>
+      </div>
+      <div id="seat${seatIndex}card0" class="faceup card0">
+        <div class="${faceupCard1}" show.bind="playing && faceupCard1 && (!hasFolded || isHovering)"></div>      
+      </div>
+      <div id="seat${seatIndex}card1" class="faceup card1">
+        <div class="${faceupCard2}" show.bind="playing && faceupCard2 && (!hasFolded || isHovering)"></div>      
+      </div>
+      <div show.bind="canSit" class="invitation">Sit Down</div>
+
+    </div>
+  </div>
+
+  <div class="stack-label" id="stack${seatIndex}">
+    <span show.bind="bet" id="stack${seatIndex}span">${bet | numberFormat}</span>
+  </div>
+  
+<div repeat.for="chip of chips" class="${chip.classes}" css="top: ${chip.top}px; left: ${chip.left}px;"></div>
+
+</template>

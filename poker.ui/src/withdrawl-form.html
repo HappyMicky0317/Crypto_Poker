@@ -1,0 +1,98 @@
+<template>
+    <require from="./lib/crypto-format"></require>
+    <h3>Funds Withdrawl</h3>
+
+    <div show.bind="loading">
+        <span>Loading your account please wait...</span>
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+
+    <div show.bind="!loading && !success">
+        <p>Your current balance:</p>
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Currency</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr repeat.for="account of accounts">
+                    <td>
+                        <label show.bind="!account.insufficientBalance">
+                            <input type="checkbox" value="" checked.bind="account.checked" change.delegate="accountChecked(account)">
+                        </label>
+                    </td>
+                    <td>
+                        <span class="uppercase">${account.currency}</span>
+                        <i class="currency-icon currency-${account.currency}"></i>
+                    </td>
+                    <td>${account.balance}
+                        <i class="currency-icon currency-${account.currency}" show.bind="account.balance>0"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row" show.bind="!success && !loading && !insufficientBalance && accounts.length">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label>Amount:</label>
+                <input type="text" class="form-control" placeholder="enter amt" value.bind="withdrawlAmount">
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="form-group">
+                <label>Receiving Address:</label>
+                <input type="text" class="form-control" placeholder="enter receiving address here" value.bind="receivingAddress">
+                <span show.bind="refundAddress && refundAddress == receivingAddress" class="cash-out-receiving-address-info">You
+                    have cashed out to this address ${refundAddressCount} time<span show.bind="refundAddressCount>1">s</span>
+                    </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" id="cashing-out-info" show.bind="cashingOutInfo">
+        <div>${cashingOutInfo}</div>
+        <i class="fa fa-spinner fa-spin" show.bind="inProgress"></i>
+    </div>
+
+    <div class="alert alert-danger" show.bind="!loading && errorMessage">${errorMessage}</div>
+
+    <div id="cashOutSummary" show.bind="success">
+        <h4>Withdrawl Approved</h3>
+            <div class="alert alert-warning">Your transaction will be pushed to the network in ~1 hour</div>
+            <table class="cash-out-summary-table">
+                <tr>
+                    <td>Sent:</td>
+                    <td><span class="cashOutSummary-sent">${amountSent | cryptoFormat:currency}</span>
+                        <i class="currency-icon currency-${currency}"></i></td>
+                </tr>
+                <tr show.bind="txHashLink">
+                    <td>Tx Hash:</td>
+                    <td>
+                        <span class="cashOutSummary-txHash">
+                            <a href.bind="txHashLink" target="_blank">[View]</span>
+                        </span>
+                </tr>
+                <tr>
+                    <td>Your Balance:</td>
+                    <td>
+                        <span class="cashOutSummary-balance">${balance | cryptoFormat:currency}</span>
+                        <i class="currency-icon currency-${currency}"></i>
+                    </td>
+                </tr>
+            </table>
+
+    </div>
+
+    </div>
+
+    <div style="margin-top: 20px;">
+        <span click.trigger="controller.cancel()" id="cashOut-window-close" class="options-btn">Close</span>
+        <button click.trigger="withdraw()" id="cashOut-window-withdraw" class="options-btn red" disabled.bind="inProgress"
+            show.bind="!result && !loading && !insufficientBalance && accounts.length">Confirm & Withdraw</button>
+    </div>
+</template>

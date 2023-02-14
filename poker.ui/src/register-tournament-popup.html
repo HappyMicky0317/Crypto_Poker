@@ -1,0 +1,37 @@
+<template>
+  <ux-dialog>    
+    <ux-dialog-body>
+      
+      <h3>${view.tournament.name} <i class="fa fa-trophy" aria-hidden="true"></i></h3>      
+      
+      <div >
+        <p class="alert alert-info">
+          Your buy in amount is added to the prize total. <span show.bind="housePrize">The House contributes ${housePrize}
+              <span class="uppercase">${view.tournament.currency}</span>
+              <i class="currency-icon currency-${view.tournament.currency}"></i>
+        </span>
+        </p>
+        <p class="alert alert-danger" show.bind="!view.isFunded">
+          You do not have sufficient funds to register for this tournament. 
+          <p>The tournament buy in is ${view.tournament.buyIn} <span class="uppercase">${view.tournament.currency}</span>
+          <i class="currency-icon currency-${view.tournament.currency}"></i>
+        
+            <button click.trigger="openDepositWindow()" class="btn btn-info" show.bind="!view.isFunded">Deposit Now!<i class="fa fa-money"></i></button>            
+        </p>
+          <!-- <p show.bind="view.isFunded" style="float:right;">
+            <button click.trigger="registerForTournament()" class="btn btn-secondary"> Register for Tournament <i class="fa fa-trophy"></i></button>
+          </p> -->
+        </p>
+      </div>
+     
+
+      <div style="margin-top: 20px;">
+        <span click.trigger="controller.cancel()" class="options-btn">Close</span>
+        <button click.trigger="registerForTournament()" class="options-btn" style="float:right;color:white;background-color: red;"
+            show.bind="view.isFunded"><i class="fa fa-plus"></i>  Register Now</button>
+    </div>
+      
+    </ux-dialog-body>
+   
+  </ux-dialog>
+</template>

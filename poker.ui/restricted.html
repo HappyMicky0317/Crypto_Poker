@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Online Crypto Poker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      text-align: center;      
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      padding-top: 50px;
+      height: 100%;
+      background: #171717;
+      color: #FFFFFF;
+      padding: 0;
+      margin: 0;
+    }
+    .logo-banner{
+      background-color: #FFFFFF;
+      padding: 20px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="logo-banner"><img src="/images/logo.png" /></div>
+  
+  <h1>Important notice for players <span id='country'></span></h1>
+  <p>We’d like to inform you that online Poker is not being offered to players residing in your country. </p>
+
+  <script>
+    function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+    document.getElementById("country").innerText = ' located in ' + getParameterByName('c');
+  </script>
+</body>
+
+</html>
